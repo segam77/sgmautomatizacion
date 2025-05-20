@@ -27,7 +27,7 @@
             background-size: 100% 100%;
         }
         .hero-bg h1 { 
-            color: #F3F4F6; 
+            color: #F3F4F6; /* Color blanco/grisáceo para el H1 en cabecera */
         }
         .service-card {
             background-color: #FFFFFF; 
@@ -61,7 +61,7 @@
         }
         .chat-bubble.show { opacity: 1; transform: translateY(0); }
         
-        .action-button { 
+        .action-button { /* Estilo para botones de selección de escenario */
             padding: 0.75rem 1.5rem; 
             border-radius: 8px;
             font-weight: 500;
@@ -69,10 +69,10 @@
             border: 1px solid #D1D5DB; 
             background-color: #F9FAFB; 
             color: #374151; 
-            display: inline-flex; /* Para alinear icono y texto */
-            align-items: center; /* Alinear verticalmente */
-            justify-content: center; /* Centrar contenido */
-            gap: 0.5rem; /* Espacio entre icono y texto */
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem; 
             cursor: pointer;
             box-shadow: 0 1px 3px rgba(0,0,0,0.05);
         }
@@ -103,6 +103,24 @@
             transform: translateY(0px); 
         }
         
+        .hero-cta-button { /* Estilo específico para el botón "Ver demostración" en la cabecera */
+            background-color: #3B82F6; /* Azul Tailwind (bg-blue-500) */
+            color: white;
+            padding: 0.75rem 2rem; /* Equivalente a py-3 px-8 de Tailwind */
+            font-size: 1.125rem; /* text-lg */
+            font-weight: 600; /* semibold */
+            border-radius: 0.5rem; /* rounded-lg */
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1); /* shadow-lg */
+            transition: background-color 0.3s, transform 0.2s, box-shadow 0.3s;
+            display: inline-block;
+            border: none; /* Sin borde explícito */
+        }
+        .hero-cta-button:hover {
+            background-color: #2563EB; /* Azul más oscuro (hover:bg-blue-600) */
+            transform: scale(1.05);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.1); /* Sombra más pronunciada en hover */
+        }
+
         .play-demo-button { 
             padding: 0.75rem 1.5rem;
             border-radius: 8px;
@@ -268,7 +286,7 @@
                 </svg>
             </div>
 
-            <a href="#demo" class="hero-cta-button">
+            <a href="#demo" class="hero-cta-button"> 
                 Ver demostración
             </a>
         </div>
@@ -306,8 +324,8 @@
                 <div class="scenario-selector text-center mb-6">
                     <p class="font-semibold mb-3 text-gray-700 text-lg">Elija el tipo de negocio:</p>
                     <div class="flex flex-wrap justify-center gap-3">
-                        <button id="selectDentist" data-sub_scenario="dentist_consulta_general" class="action-button">
-                            <span class="material-icons">medical_services</span>
+                        <button id="selectDentist" data-sub_scenario="dentist_consulta_general" class="action-button"> 
+                           <span class="material-icons">medical_services</span>
                             <span>Clínica dental</span>
                         </button>
                         <button id="selectRestaurant" data-sub_scenario="restaurant_reserva" class="action-button">
@@ -619,10 +637,10 @@
                     currentScenarioMessages = scenario.sequences[currentVetSequenceIndex];
                     isLastSequenceOfCurrentType = currentVetSequenceIndex === (scenario.sequences.length - 1);
                     
-                    if (currentVetSequenceIndex === 1) { 
+                    if (currentVetSequenceIndex === 1) { // Secuencia de revisión gato (índice 1)
                         currentOwnerName = femaleOwnerNames[Math.floor(Math.random() * femaleOwnerNames.length)];
                         currentPetName = "Misi"; 
-                    } else { 
+                    } else { // Otras secuencias de veterinario
                         currentOwnerName = randomClientNames[Math.floor(Math.random() * randomClientNames.length)];
                         currentPetName = randomPetNames[Math.floor(Math.random() * randomPetNames.length)];
                     }
@@ -632,9 +650,9 @@
                     currentScenarioMessages = scenario.sequences[currentDentalSequenceIndex];
                     isLastSequenceOfCurrentType = currentDentalSequenceIndex === (scenario.sequences.length - 1);
                     
-                    if (currentDentalSequenceIndex === 0) { 
+                    if (currentDentalSequenceIndex === 0) { // Secuencia de pedir cita completa
                          currentDemoClientName = randomClientNames[Math.floor(Math.random() * randomClientNames.length)];
-                    } else {
+                    } else { // Secuencia de consultar precio
                          currentDemoClientName = "Cliente"; 
                     }
                     currentOwnerName = currentDemoClientName; 
@@ -653,8 +671,8 @@
 
 
             playDemoButton.disabled = true;
-            const originalButtonText = playDemoButton.querySelector('span').textContent;
-            playDemoButton.querySelector('span').textContent = 'Procesando...';
+            // const originalButtonText = playDemoButton.querySelector('span').textContent; // No se cambia el texto
+            // playDemoButton.querySelector('span').textContent = 'Procesando...'; // No se cambia el texto
             
             if (chatArea.querySelector('p.text-gray-500')) { 
                  chatArea.innerHTML = '';
@@ -679,6 +697,7 @@
             updateFlowActiveStep(currentFlowStepNumber + 1); 
 
             const scenarioKeyThatJustPlayed = selectedSubScenarioKey;
+            const originalButtonText = "Iniciar demo"; 
 
             if (scenario.sequences && scenario.sequences.length > 0 && !isLastSequenceOfCurrentType) {
                 demoLoopTimeout = setTimeout(() => {
