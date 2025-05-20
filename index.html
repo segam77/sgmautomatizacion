@@ -69,12 +69,11 @@
             transform: translateX(-50%); width: 60px; height: 3px;
             background-color: #3B82F6; border-radius: 2px;
         }
-        /* Estilo para el contenedor del SVG en la cabecera */
         .hero-svg-container {
             width: 100%;
-            max-width: 400px; /* Ajusta el tamaño máximo del SVG */
-            height: 200px;    /* Ajusta la altura del SVG */
-            margin: 2rem auto; /* Centrado y con margen */
+            max-width: 400px; 
+            height: 200px;    
+            margin: 2rem auto; 
         }
         .hero-svg-container svg {
             width: 100%;
@@ -108,8 +107,25 @@
         .flow-step.completed + .flow-line { background-color: #10B981; }
         .flow-text { font-size: 0.75rem; font-weight: 500; max-width: 80px; line-height: 1.2; }
 
-        .scenario-selector button { margin: 0.5rem; }
+        .scenario-selector button { margin: 0.25rem; } /* Reducido el margen general para botones de escenario */
         .sub-scenario-selector { margin-top: 1rem; min-height: 50px; }
+        .sub-scenario-selector button {
+             display: block; /* Hace que los botones ocupen todo el ancho disponible */
+             width: 80%; /* O un ancho específico que funcione bien */
+             margin-left: auto;
+             margin-right: auto;
+             margin-bottom: 0.75rem; /* Espacio entre botones apilados */
+        }
+        @media (min-width: 640px) { /* sm breakpoint de Tailwind */
+            .sub-scenario-selector button {
+                display: inline-block; /* Vuelven a estar en línea en pantallas más grandes */
+                width: auto; /* Ancho automático */
+                margin-left: 0.25rem; /* Restaura margen horizontal */
+                margin-right: 0.25rem;
+                margin-bottom: 0.5rem; /* Margen inferior original */
+            }
+        }
+
     </style>
 </head>
 <body class="bg-gray-50">
@@ -335,7 +351,8 @@
                     { type: 'user', text: 'Seríamos 4 personas.', step: 2 },
                     { type: 'bot', text: 'Perfecto. ¿Para qué día y hora desearía la reserva?', step: 3 },
                     { type: 'user', text: 'Para este sábado a las 21:00, si es posible.', step: 3 },
-                    { type: 'bot', text: 'Un momento, voy a comprobar... Sí, tenemos disponibilidad. Mesa para 4 personas el sábado a las 21:00. ¿A nombre de quién hago la reserva?', step: 4 },
+                    { type: 'bot', text: 'Un momento, voy a comprobar...', step: 4, delay: 1200 }, // Mensaje 1
+                    { type: 'bot', text: 'Sí, tenemos disponibilidad. Mesa para 4 personas el sábado a las 21:00. ¿A nombre de quién hago la reserva?', step: 4 }, // Mensaje 2
                     { type: 'user', text: 'A nombre de {CLIENT_NAME}, por favor.', step: 4, dynamicName: true },
                     { type: 'bot', text: '¡Muy bien, {CLIENT_NAME}! Su reserva para 4 personas el sábado a las 21:00 está confirmada. ¡Les esperamos!', step: 4, dynamicName: true }
                 ]
