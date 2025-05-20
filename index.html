@@ -8,9 +8,17 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <style>
-        body { font-family: 'Roboto', sans-serif; color: #374151; }
-        h1, h2, h3, h4, h5, h6 { font-family: 'Poppins', sans-serif; }
+        body { 
+            font-family: 'Roboto', sans-serif; 
+            color: #374151; 
+            background-color: #F3F4F6; 
+        }
+        h1, h2, h3, h4, h5, h6 { 
+            font-family: 'Poppins', sans-serif; 
+            color: #1F2937; 
+        }
         .hero-bg {
             background-color: #111827; 
             background-image: 
@@ -18,9 +26,15 @@
                 radial-gradient(circle at 85% 30%, rgba(139, 92, 246, 0.25), transparent 40%);
             background-size: 100% 100%;
         }
+        .hero-bg h1 { 
+            color: #F3F4F6; 
+        }
         .service-card {
-            background-color: #ffffff; border: 1px solid #E5E7EB; border-radius: 12px;
-            padding: 2rem; transition: transform 0.3s ease, box-shadow 0.3s ease;
+            background-color: #FFFFFF; 
+            border: 1px solid #E5E7EB; 
+            border-radius: 12px;
+            padding: 2rem; 
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
             box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -1px rgba(0,0,0,0.03);
         }
         .service-card:hover {
@@ -34,31 +48,107 @@
             box-shadow: 0 2px 4px rgba(0,0,0,0.08);
         }
         .chat-bubble.user {
-            background-color: #3B82F6; color: white; align-self: flex-end;
+            background-color: #3B82F6; 
+            color: white; 
+            align-self: flex-end;
             margin-left: auto; border-bottom-right-radius: 8px;
         }
         .chat-bubble.bot {
-            background-color: #F3F4F6; color: #1F2937; align-self: flex-start;
+            background-color: #E5E7EB; 
+            color: #1F2937; 
+            align-self: flex-start;
             margin-right: auto; border-bottom-left-radius: 8px;
         }
         .chat-bubble.show { opacity: 1; transform: translateY(0); }
-        .action-button {
-            transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
-            box-shadow: 0 4px 10px rgba(59, 130, 246, 0.2);
-            border: 1px solid transparent;
+        
+        .action-button { 
+            padding: 0.75rem 1.5rem; 
+            border-radius: 8px;
+            font-weight: 500;
+            transition: background-color 0.2s ease-out, transform 0.2s ease-out, box-shadow 0.2s ease-out, border-color 0.2s ease-out, color 0.2s ease-out;
+            border: 1px solid #D1D5DB; 
+            background-color: #F9FAFB; 
+            color: #374151; 
+            display: inline-flex; /* Para alinear icono y texto */
+            align-items: center; /* Alinear verticalmente */
+            justify-content: center; /* Centrar contenido */
+            gap: 0.5rem; /* Espacio entre icono y texto */
+            cursor: pointer;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
         }
+        .action-button .material-icons { 
+            font-size: 1.25em; 
+            line-height: 1; 
+        }
+
         .action-button:hover:not(:disabled) {
-            transform: scale(1.03);
-            box-shadow: 0 6px 15px rgba(59, 130, 246, 0.3);
+            transform: translateY(-1px);
+            border-color: #9CA3AF; 
+            background-color: #F3F4F6; 
+            box-shadow: 0 2px 6px rgba(0,0,0,0.07);
         }
         .action-button:disabled {
-            background-color: #9CA3AF !important; color: #E5E7EB !important;
-            cursor: not-allowed; box-shadow: none; opacity: 0.7;
+            background-color: #E5E7EB !important; 
+            color: #9CA3AF !important;
+            border-color: #E5E7EB !important;
+            cursor: not-allowed; 
+            box-shadow: none; 
+            opacity: 0.8;
         }
         .action-button.selected {
-            background-color: #2563EB !important; color: white !important;
-            border-color: #1D4ED8; box-shadow: 0 2px 5px rgba(37, 99, 235, 0.4);
+            background-color: #3B82F6 !important; 
+            color: white !important;
+            border-color: #2563EB !important; 
+            box-shadow: 0 4px 10px rgba(59, 130, 246, 0.3);
+            transform: translateY(0px); 
         }
+        
+        .play-demo-button { 
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: bold; 
+            color: white; 
+            background-color: #10B981; 
+            transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
+            display: inline-flex; 
+            align-items: center;
+            gap: 0.5rem;
+            border: none; 
+            box-shadow: 0 4px 10px rgba(16, 185, 129, 0.2); 
+        }
+        .play-demo-button:hover:not(:disabled) {
+            background-color: #059669; 
+            transform: scale(1.03) translateY(-1px); 
+            box-shadow: 0 6px 12px rgba(16, 185, 129, 0.3);
+        }
+        .play-demo-button:disabled {
+            background-color: #6EE7B7 !important; 
+            color: #A7F3D0 !important; 
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+        .play-demo-button .material-icons { 
+            font-size: 1.5em; 
+        }
+
+
+        .contact-submit-button { 
+            padding: 0.75rem 2rem;
+            border-radius: 8px;
+            font-weight: bold;
+            color: white;
+            background-color: #3B82F6; 
+            transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
+            border: none; 
+            box-shadow: 0 4px 10px rgba(59, 130, 246, 0.2);
+        }
+        .contact-submit-button:hover:not(:disabled) {
+            background-color: #2563EB; 
+            transform: scale(1.03) translateY(-1px);
+            box-shadow: 0 6px 12px rgba(59, 130, 246, 0.3);
+        }
+
+
         .section-title { 
             position: relative;
             padding-bottom: 0.5rem;
@@ -67,7 +157,8 @@
         .section-title::after {
             content: ''; position: absolute; bottom: 0; left: 50%;
             transform: translateX(-50%); width: 60px; height: 3px;
-            background-color: #3B82F6; border-radius: 2px;
+            background-color: #3B82F6; 
+            border-radius: 2px;
         }
         .hero-svg-container {
             width: 100%;
@@ -83,50 +174,76 @@
 
         .demo-flow {
             display: flex; align-items: center; justify-content: center; margin-top: 1.5rem;
-            padding: 1rem; background-color: #F9FAFB; border-radius: 8px;
-            box-shadow: inset 0 2px 4px 0 rgba(0,0,0,0.05); min-height: 70px; 
+            padding: 1rem; background-color: #F9FAFB; 
+            border-radius: 8px;
+            border: 1px solid #E5E7EB; 
         }
         .flow-step {
             display: flex; flex-direction: column; align-items: center; text-align: center;
-            color: #6B7280; transition: color 0.5s ease;
+            color: #4B5563; 
+            transition: color 0.5s ease;
         }
-        .flow-step.active { color: #3B82F6; }
-        .flow-step.completed { color: #10B981; }
+        .flow-step.active { color: #3B82F6;  }
+        .flow-step.completed { color: #10B981;  }
         .flow-icon {
-            width: 2.5rem; height: 2.5rem; border-radius: 50%; background-color: #E5E7EB;
+            width: 2.5rem; height: 2.5rem; border-radius: 50%; background-color: #E5E7EB; 
             display: flex; align-items: center; justify-content: center; margin-bottom: 0.5rem;
             transition: background-color 0.5s ease, transform 0.3s ease; border: 2px solid transparent;
         }
-        .flow-step.active .flow-icon { background-color: #DBEAFE; border-color: #3B82F6; transform: scale(1.1); }
-        .flow-step.completed .flow-icon { background-color: #A7F3D0; border-color: #10B981; }
-        .flow-icon svg { width: 1.25rem; height: 1.25rem; fill: currentColor; }
+        .flow-step.active .flow-icon { 
+            background-color: #DBEAFE; 
+            border-color: #3B82F6; 
+            transform: scale(1.1); 
+        }
+        .flow-step.active .flow-icon svg { color: #3B82F6; } 
+        .flow-step.completed .flow-icon { 
+            background-color: #A7F3D0; 
+            border-color: #10B981; 
+        }
+        .flow-icon svg { 
+            width: 1.25rem; height: 1.25rem; 
+            color: #4B5563; 
+        }
         .flow-line {
-            width: 3rem; height: 2px; background-color: #D1D5DB; margin: 0 0.5rem;
+            width: 3rem; height: 2px; background-color: #D1D5DB; 
+            margin: 0 0.5rem;
             transform: translateY(-1.25rem); transition: background-color 0.5s ease;
         }
-        .flow-step.completed + .flow-line { background-color: #10B981; }
+        .flow-step.completed + .flow-line { background-color: #10B981;  }
         .flow-text { font-size: 0.75rem; font-weight: 500; max-width: 80px; line-height: 1.2; }
 
         .scenario-selector button { 
             margin: 0.5rem; 
         }
+        .form-input, .form-textarea {
+            background-color: #FFFFFF; 
+            border: 1px solid #D1D5DB; 
+            color: #1F2937; 
+        }
+        .form-input:focus, .form-textarea:focus {
+            border-color: #3B82F6; 
+            box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2); 
+        }
+        .footer-bg { background-color: #1F2937;  }
+        .footer-text { color: #D1D5DB;  }
+
     </style>
 </head>
-<body class="bg-gray-50">
+<body class="bg-gray-100"> 
 
-    <header class="hero-bg text-white py-16 md:py-24">
+    <header class="hero-bg text-gray-100 py-16 md:py-24"> 
         <div class="container mx-auto text-center px-6">
-            <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">Transforme su negocio con <span class="text-blue-400">SGM Automatización</span></h1>
+            <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">Transforme su negocio con SGM Automatización</h1>
             <p class="text-lg md:text-xl text-gray-300 mb-8 max-w-2xl mx-auto">Soluciones a medida con IA para optimizar procesos, mejorar la atención al cliente y potenciar el crecimiento.</p>
             
             <div class="hero-svg-container" role="img" aria-label="Ilustración abstracta de automatización e inteligencia artificial">
                 <svg viewBox="0 0 200 100" xmlns="http://www.w3.org/2000/svg">
                     <defs>
-                        <linearGradient id="gradNode" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <linearGradient id="gradNodeHero" x1="0%" y1="0%" x2="100%" y2="100%">
                             <stop offset="0%" style="stop-color:rgba(59, 130, 246, 0.8); stop-opacity:1" />
                             <stop offset="100%" style="stop-color:rgba(139, 92, 246, 0.7); stop-opacity:1" />
                         </linearGradient>
-                         <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+                         <filter id="glowHero" x="-50%" y="-50%" width="200%" height="200%">
                             <feGaussianBlur stdDeviation="1.5" result="coloredBlur"/>
                             <feMerge>
                                 <feMergeNode in="coloredBlur"/>
@@ -134,60 +251,45 @@
                             </feMerge>
                         </filter>
                     </defs>
-                
-                    <line x1="30" y1="50" x2="70" y2="30" stroke="rgba(255,255,255,0.2)" stroke-width="1.5">
-                        <animate attributeName="stroke-dasharray" values="0,100;50,50;100,0" dur="10s" repeatCount="indefinite"/>
-                    </line>
-                    <line x1="70" y1="30" x2="100" y2="70" stroke="rgba(255,255,255,0.2)" stroke-width="1.5">
-                         <animate attributeName="stroke-dasharray" values="100,0;50,50;0,100" dur="12s" repeatCount="indefinite" begin="2s"/>
-                    </line>
-                    <line x1="100" y1="70" x2="130" y2="40" stroke="rgba(255,255,255,0.2)" stroke-width="1.5">
-                        <animate attributeName="stroke-dasharray" values="0,100;50,50;100,0" dur="11s" repeatCount="indefinite" begin="1s"/>
-                    </line>
-                    <line x1="130" y1="40" x2="170" y2="60" stroke="rgba(255,255,255,0.2)" stroke-width="1.5">
-                         <animate attributeName="stroke-dasharray" values="100,0;50,50;0,100" dur="13s" repeatCount="indefinite" begin="3s"/>
-                    </line>
-                    <line x1="30" y1="50" x2="100" y2="70" stroke="rgba(255,255,255,0.1)" stroke-width="1" stroke-dasharray="3 3">
-                        <animate attributeName="stroke-dashoffset" values="0;12" dur="2s" repeatCount="indefinite"/>
-                    </line>
-                     <line x1="70" y1="30" x2="130" y2="40" stroke="rgba(255,255,255,0.1)" stroke-width="1" stroke-dasharray="3 3">
-                        <animate attributeName="stroke-dashoffset" values="12;0" dur="2.5s" repeatCount="indefinite"/>
-                    </line>
-                
-                    <circle cx="30" cy="50" r="6" fill="url(#gradNode)" filter="url(#glow)"/>
-                    <circle cx="70" cy="30" r="8" fill="url(#gradNode)" filter="url(#glow)"/>
-                    <circle cx="100" cy="70" r="7" fill="url(#gradNode)" filter="url(#glow)"/>
-                    <circle cx="130" cy="40" r="9" fill="url(#gradNode)" filter="url(#glow)"/>
-                    <circle cx="170" cy="60" r="6" fill="url(#gradNode)" filter="url(#glow)"/>
-
-                    <circle cx="50" cy="65" r="3" fill="rgba(255,255,255,0.3)"/>
-                    <circle cx="150" cy="25" r="4" fill="rgba(255,255,255,0.3)"/>
-                    <circle cx="85" cy="50" r="3" fill="rgba(255,255,255,0.2)"/>
+                    <line x1="30" y1="50" x2="70" y2="30" stroke="rgba(96, 165, 250, 0.2)" stroke-width="1.5"><animate attributeName="stroke-dasharray" values="0,100;50,50;100,0" dur="10s" repeatCount="indefinite"/></line>
+                    <line x1="70" y1="30" x2="100" y2="70" stroke="rgba(96, 165, 250, 0.2)" stroke-width="1.5"><animate attributeName="stroke-dasharray" values="100,0;50,50;0,100" dur="12s" repeatCount="indefinite" begin="2s"/></line>
+                    <line x1="100" y1="70" x2="130" y2="40" stroke="rgba(96, 165, 250, 0.2)" stroke-width="1.5"><animate attributeName="stroke-dasharray" values="0,100;50,50;100,0" dur="11s" repeatCount="indefinite" begin="1s"/></line>
+                    <line x1="130" y1="40" x2="170" y2="60" stroke="rgba(96, 165, 250, 0.2)" stroke-width="1.5"><animate attributeName="stroke-dasharray" values="100,0;50,50;0,100" dur="13s" repeatCount="indefinite" begin="3s"/></line>
+                    <line x1="30" y1="50" x2="100" y2="70" stroke="rgba(96, 165, 250, 0.1)" stroke-width="1" stroke-dasharray="3 3"><animate attributeName="stroke-dashoffset" values="0;12" dur="2s" repeatCount="indefinite"/></line>
+                    <line x1="70" y1="30" x2="130" y2="40" stroke="rgba(96, 165, 250, 0.1)" stroke-width="1" stroke-dasharray="3 3"><animate attributeName="stroke-dashoffset" values="12;0" dur="2.5s" repeatCount="indefinite"/></line>
+                    <circle cx="30" cy="50" r="6" fill="url(#gradNodeHero)" filter="url(#glowHero)"/>
+                    <circle cx="70" cy="30" r="8" fill="url(#gradNodeHero)" filter="url(#glowHero)"/>
+                    <circle cx="100" cy="70" r="7" fill="url(#gradNodeHero)" filter="url(#glowHero)"/>
+                    <circle cx="130" cy="40" r="9" fill="url(#gradNodeHero)" filter="url(#glowHero)"/>
+                    <circle cx="170" cy="60" r="6" fill="url(#gradNodeHero)" filter="url(#glowHero)"/>
+                    <circle cx="50" cy="65" r="3" fill="rgba(96, 165, 250, 0.3)"/>
+                    <circle cx="150" cy="25" r="4" fill="rgba(96, 165, 250, 0.3)"/>
+                    <circle cx="85" cy="50" r="3" fill="rgba(96, 165, 250, 0.2)"/>
                 </svg>
             </div>
 
-            <a href="#demo" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-8 rounded-lg text-lg shadow-lg transition-transform transform hover:scale-105 inline-block">
+            <a href="#demo" class="hero-cta-button">
                 Ver demostración
             </a>
         </div>
     </header>
 
-    <section id="services" class="py-16 md:py-24 bg-white">
+    <section id="services" class="py-16 md:py-24 bg-white"> 
         <div class="container mx-auto px-6">
             <h2 class="section-title text-3xl md:text-4xl font-semibold text-center text-gray-800">Nuestros servicios de automatización</h2>
             <div class="grid md:grid-cols-3 gap-8 mt-12">
                  <div class="service-card text-center">
-                    <div class="flex justify-center mb-6"><svg class="h-16 w-16 text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M8.625 12a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375M21 12c0 4.556-3.86 8.25-8.625 8.25S3.75 16.556 3.75 12s3.86-8.25 8.625-8.25S21 7.444 21 12z" /></svg></div>
+                    <div class="flex justify-center mb-6"><svg class="h-16 w-16 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M8.625 12a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375M21 12c0 4.556-3.86 8.25-8.625 8.25S3.75 16.556 3.75 12s3.86-8.25 8.625-8.25S21 7.444 21 12z" /></svg></div>
                     <h3 class="text-2xl font-semibold mb-3 text-gray-700">Chatbots inteligentes</h3>
                     <p class="text-gray-600 leading-relaxed">Desarrollamos chatbots que gestionan consultas, resuelven dudas y captan clientes potenciales 24/7, mejorando la interacción y liberando a su equipo.</p>
                 </div>
                 <div class="service-card text-center">
-                    <div class="flex justify-center mb-6"><svg class="h-16 w-16 text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5m-9-3.75h.008v.008H12v-.008zM12 15h.008v.008H12V15zm0 2.25h.008v.008H12v-.008zM9.75 15h.008v.008H9.75V15zm0 2.25h.008v.008H9.75v-.008zM7.5 15h.008v.008H7.5V15zm0 2.25h.008v.008H7.5v-.008zm6.75-4.5h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V15zm0 2.25h.008v.008h-.008v-.008zm2.25-4.5h.008v.008H16.5v-.008zm0 2.25h.008v.008H16.5V15z" /></svg></div>
+                    <div class="flex justify-center mb-6"><svg class="h-16 w-16 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5m-9-3.75h.008v.008H12v-.008zM12 15h.008v.008H12V15zm0 2.25h.008v.008H12v-.008zM9.75 15h.008v.008H9.75V15zm0 2.25h.008v.008H9.75v-.008zM7.5 15h.008v.008H7.5V15zm0 2.25h.008v.008H7.5v-.008zm6.75-4.5h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V15zm0 2.25h.008v.008h-.008v-.008zm2.25-4.5h.008v.008H16.5v-.008zm0 2.25h.008v.008H16.5V15z" /></svg></div>
                     <h3 class="text-2xl font-semibold mb-3 text-gray-700">Gestión de citas online</h3>
                     <p class="text-gray-600 leading-relaxed">Sistemas para que sus clientes puedan pedir, modificar o cancelar citas de forma automática, integrados con su calendario y con recordatorios para minimizar ausencias.</p>
                 </div>
                 <div class="service-card text-center">
-                     <div class="flex justify-center mb-6"><svg class="h-16 w-16 text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L1.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.25 12L17.437 15.904 15.75 18.75l.813-2.846a4.5 4.5 0 003.09-3.09L22.75 12l-2.846-.813a4.5 4.5 0 00-3.09-3.09L18.25 5.25l-.813 2.846a4.5 4.5 0 00-3.09 3.09L11.25 12l2.846.813a4.5 4.5 0 003.09 3.09z" /></svg></div>
+                     <div class="flex justify-center mb-6"><svg class="h-16 w-16 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L1.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.25 12L17.437 15.904 15.75 18.75l.813-2.846a4.5 4.5 0 003.09-3.09L22.75 12l-2.846-.813a4.5 4.5 0 00-3.09-3.09L18.25 5.25l-.813 2.846a4.5 4.5 0 00-3.09 3.09L11.25 12l2.846.813a4.5 4.5 0 003.09 3.09z" /></svg></div>
                     <h3 class="text-2xl font-semibold mb-3 text-gray-700">Procesos optimizados</h3>
                     <p class="text-gray-600 leading-relaxed">Creamos flujos de trabajo a medida con n8n y otras herramientas para conectar sus apps, automatizar tareas repetitivas y aumentar la eficiencia de su negocio.</p>
                 </div>
@@ -200,17 +302,28 @@
             <h2 class="section-title text-3xl md:text-4xl font-semibold text-center text-gray-800">Demostración automática</h2>
             <p class="text-center text-gray-600 mb-6 text-lg max-w-xl mx-auto">Seleccione un tipo de negocio para ver una simulación de nuestro chatbot.</p>
             
-            <div class="max-w-xl mx-auto bg-white p-6 sm:p-8 rounded-xl shadow-2xl">
-                <div class="scenario-selector text-center mb-4">
-                    <p class="font-semibold mb-2 text-gray-700">Elija el tipo de negocio:</p>
-                    <button id="selectDentist" data-sub_scenario="dentist_consulta_general" class="action-button bg-sky-500 hover:bg-sky-600 text-white font-medium py-2 px-4 rounded-lg">Clínica dental</button>
-                    <button id="selectRestaurant" data-sub_scenario="restaurant_reserva" class="action-button bg-amber-500 hover:bg-amber-600 text-white font-medium py-2 px-4 rounded-lg">Restaurante</button>
-                    <button id="selectVeterinarian" data-sub_scenario="veterinarian_consulta_general" class="action-button bg-emerald-500 hover:bg-emerald-600 text-white font-medium py-2 px-4 rounded-lg">Veterinario</button>
+            <div class="max-w-xl mx-auto bg-white p-6 sm:p-8 rounded-xl shadow-xl">
+                <div class="scenario-selector text-center mb-6">
+                    <p class="font-semibold mb-3 text-gray-700 text-lg">Elija el tipo de negocio:</p>
+                    <div class="flex flex-wrap justify-center gap-3">
+                        <button id="selectDentist" data-sub_scenario="dentist_consulta_general" class="action-button">
+                            <span class="material-icons">medical_services</span>
+                            <span>Clínica dental</span>
+                        </button>
+                        <button id="selectRestaurant" data-sub_scenario="restaurant_reserva" class="action-button">
+                            <span class="material-icons">restaurant</span>
+                            <span>Restaurante</span>
+                        </button>
+                        <button id="selectVeterinarian" data-sub_scenario="veterinarian_consulta_general" class="action-button">
+                             <span class="material-icons">pets</span>
+                            <span>Veterinario</span>
+                        </button>
+                    </div>
                 </div>
-                                
+                                                
                 <div class="flex justify-center my-8">
-                    <button id="playDemoButton" class="action-button bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-8 rounded-lg text-lg flex items-center space-x-3" disabled>
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8.002v4.005a1 1 0 001.555.833l3.194-2.002a1 1 0 000-1.666L9.555 7.168z" clip-rule="evenodd" /></svg>
+                    <button id="playDemoButton" class="play-demo-button" disabled> 
+                        <span class="material-icons">play_circle_filled</span> 
                         <span>Iniciar demo</span>
                     </button>
                 </div>
@@ -230,25 +343,25 @@
             <form id="contactForm" class="max-w-xl mx-auto bg-gray-50 p-8 rounded-xl shadow-xl">
                 <div class="mb-6">
                     <label for="name" class="block mb-2 text-sm font-medium text-gray-700">Nombre completo</label>
-                    <input type="text" id="name" name="name" class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3" placeholder="Su nombre" required>
+                    <input type="text" id="name" name="name" class="form-input bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3" placeholder="Su nombre" required>
                 </div>
                 <div class="mb-6">
                     <label for="email" class="block mb-2 text-sm font-medium text-gray-700">Correo electrónico</label>
-                    <input type="email" id="email" name="email" class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3" placeholder="su.email@example.com" required>
+                    <input type="email" id="email" name="email" class="form-input bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3" placeholder="su.email@example.com" required>
                 </div>
                 <div class="mb-6">
                     <label for="message" class="block mb-2 text-sm font-medium text-gray-700">Su mensaje</label>
-                    <textarea id="message" name="message" rows="5" class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3" placeholder="Describa su consulta o proyecto..." required></textarea>
+                    <textarea id="message" name="message" rows="5" class="form-textarea bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3" placeholder="Describa su consulta o proyecto..." required></textarea>
                 </div>
                 <div class="text-center">
-                    <button type="submit" class="action-button bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-lg text-lg">Enviar mensaje</button>
+                    <button type="submit" class="contact-submit-button base-button font-bold py-3 px-8 text-lg">Enviar mensaje</button>
                 </div>
                 <p id="formSubmissionMessage" class="text-center text-green-600 mt-4 text-sm font-medium"></p>
             </form>
         </div>
     </section>
 
-    <footer class="bg-gray-800 text-gray-400 py-12">
+    <footer class="footer-bg text-footer-text py-12">
         <div class="container mx-auto px-6 text-center">
             <p class="mb-2">&copy; <span id="currentYear"></span> SGM Automatización. Todos los derechos reservados.</p>
             <p class="text-sm">Impulsando la eficiencia de negocios en España con n8n e inteligencia artificial.</p>
@@ -378,9 +491,13 @@
         };
 
         function setActiveButton(buttonGroup, selectedButton) {
-            buttonGroup.querySelectorAll('button').forEach(btn => btn.classList.remove('selected'));
+            const buttonsToProcess = Array.isArray(buttonGroup) ? buttonGroup : [buttonGroup.parentElement];
+            buttonsToProcess.forEach(group => {
+                 if(group) group.querySelectorAll('button').forEach(btn => btn.classList.remove('selected'));
+            });
             if (selectedButton) selectedButton.classList.add('selected');
         }
+
 
         function initializeDemoSelection() {
             const mainScenarioButtons = [
@@ -494,20 +611,18 @@
 
             let currentScenarioMessages;
             const scenario = scenariosData[selectedSubScenarioKey];
-            let isLastSequenceOfCurrentType = false; // Para controlar el bucle automático
+            let isLastSequenceOfCurrentType = false;
 
-            // Lógica para seleccionar nombres y secuencias
             if (scenario.sequences && scenario.sequences.length > 0) {
                 if (selectedSubScenarioKey === 'veterinarian_consulta_general') {
                     currentVetSequenceIndex = (currentVetSequenceIndex + 1) % scenario.sequences.length; 
                     currentScenarioMessages = scenario.sequences[currentVetSequenceIndex];
                     isLastSequenceOfCurrentType = currentVetSequenceIndex === (scenario.sequences.length - 1);
                     
-                    // Asignar nombres específicos para la secuencia del gato
-                    if (currentVetSequenceIndex === 1) { // Índice 1 es la revisión del gato
+                    if (currentVetSequenceIndex === 1) { 
                         currentOwnerName = femaleOwnerNames[Math.floor(Math.random() * femaleOwnerNames.length)];
                         currentPetName = "Misi"; 
-                    } else { // Otras secuencias de veterinario
+                    } else { 
                         currentOwnerName = randomClientNames[Math.floor(Math.random() * randomClientNames.length)];
                         currentPetName = randomPetNames[Math.floor(Math.random() * randomPetNames.length)];
                     }
@@ -516,16 +631,16 @@
                     currentDentalSequenceIndex = (currentDentalSequenceIndex + 1) % scenario.sequences.length;
                     currentScenarioMessages = scenario.sequences[currentDentalSequenceIndex];
                     isLastSequenceOfCurrentType = currentDentalSequenceIndex === (scenario.sequences.length - 1);
-                    // Asignar nombre de cliente para la secuencia de pedir cita del dentista
-                    if (currentDentalSequenceIndex === 0) { // Índice 0 es pedir cita completa
+                    
+                    if (currentDentalSequenceIndex === 0) { 
                          currentDemoClientName = randomClientNames[Math.floor(Math.random() * randomClientNames.length)];
                     } else {
-                         currentDemoClientName = "Cliente"; // Para la consulta de precio
+                         currentDemoClientName = "Cliente"; 
                     }
-                    currentOwnerName = "Cliente"; // No aplica dueño/mascota para dentista
+                    currentOwnerName = currentDemoClientName; 
                     currentPetName = ""; 
                 }
-            } else { // Escenarios con una sola secuencia de mensajes (ej. Restaurante)
+            } else { 
                 currentScenarioMessages = scenario.messages; 
                 currentOwnerName = "Cliente"; 
                 currentPetName = ""; 
@@ -535,7 +650,7 @@
             if (selectedSubScenarioKey === 'restaurant_reserva') { 
                 currentDemoClientName = randomClientNames[Math.floor(Math.random() * randomClientNames.length)];
             }
-            // Para veterinario, currentDemoClientName no se usa directamente, se usa currentOwnerName
+
 
             playDemoButton.disabled = true;
             const originalButtonText = playDemoButton.querySelector('span').textContent;
