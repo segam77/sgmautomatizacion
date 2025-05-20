@@ -208,10 +208,6 @@
                     <button id="selectVeterinarian" data-sub_scenario="veterinarian_consulta_general" class="action-button bg-emerald-500 hover:bg-emerald-600 text-white font-medium py-2 px-4 rounded-lg">Veterinario</button>
                 </div>
                 
-                <div id="subScenarioSelectorDentist" class="hidden"></div>
-                <div id="subScenarioSelectorRestaurant" class="hidden"></div>
-                <div id="subScenarioSelectorVeterinarian" class="hidden"></div>
-                
                 <div class="flex justify-center my-8">
                     <button id="playDemoButton" class="action-button bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-8 rounded-lg text-lg flex items-center space-x-3" disabled>
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8.002v4.005a1 1 0 001.555.833l3.194-2.002a1 1 0 000-1.666L9.555 7.168z" clip-rule="evenodd" /></svg>
@@ -273,11 +269,16 @@
 
         let selectedSubScenarioKey = null; 
         let currentDemoClientName = "Cliente"; 
-        let currentVetSequenceIndex = 0; 
-        let currentDentalSequenceIndex = 0;
+        let currentOwnerName = "Dueño/a"; // Nombre genérico para dueño de mascota
+        let currentPetName = "Mascota"; // Nombre genérico para mascota
+
+        let currentVetSequenceIndex = -1; // Iniciar en -1 para que el primer ciclo sea 0
+        let currentDentalSequenceIndex = -1; // Iniciar en -1 para que el primer ciclo sea 0
         let demoLoopTimeout = null; 
 
         const randomClientNames = ["Ana", "Carlos", "Laura", "David", "Sofía", "Javier", "Elena", "Miguel", "Lucía", "Pablo"];
+        const randomPetNames = ["Max", "Luna", "Coco", "Bella", "Rocky", "Lola", "Toby", "Nala"];
+
 
         const scenariosData = {
             'dentist_consulta_general': { 
@@ -296,8 +297,8 @@
                         { type: 'user', text: 'El martes a las 11:00 me parece perfecto.', step: 3 }, 
                         { type: 'bot', text: 'Estupendo. Su cita para revisión ha sido confirmada para el martes a las 11:00.', step: 4 }, 
                         { type: 'bot', text: 'Anotando la cita en su calendario...', step: 4 },
-                        { type: 'bot', text: 'Le recordamos su cita para la revisión mañana martes a las 11:00. ¡Le esperamos!', step: 4, delay: 2000 }, 
-                        { type: 'bot', text: '¡Hola de nuevo! Esperamos que su visita del martes fuera satisfactoria. ¿Qué tal fue todo?', step: 4, delay: 2500 }, 
+                        { type: 'bot', text: 'Le recordamos su cita para la revisión mañana martes a las 11:00. ¡Le esperamos!', step: 4, delay: 1500 }, 
+                        { type: 'bot', text: '¡Hola de nuevo! Esperamos que su visita del martes fuera satisfactoria. ¿Qué tal fue todo?', step: 4, delay: 1500 }, 
                         { type: 'user', text: '¡Todo fue genial en la cita, muchas gracias!', step: 4 }, 
                         { type: 'bot', text: 'Nos alegra mucho saber que su experiencia fue positiva. Si tiene un momento, ¿podría dejarnos una valoración en Google? Su opinión nos ayuda a mejorar. [Enlace a Google Reviews]', step: 4 }
                     ],
@@ -348,12 +349,14 @@
                         { type: 'bot', text: 'Perfecto. Les esperamos. Si necesita indicaciones para llegar, no dude en preguntar. Esperamos que todo vaya bien.', step: 4 }
                     ],
                     [ 
-                        { type: 'user', text: 'Hola, me gustaría pedir cita para una revisión para mi perro.', step: 1 },
-                        { type: 'bot', text: '¡Hola! Claro que sí. ¿Se trata de una urgencia o es una revisión rutinaria?', step: 2 },
+                        { type: 'user', text: 'Hola, me gustaría pedir cita para una revisión para mi gato.', step: 1, petType: 'gato' },
+                        { type: 'bot', text: '¡Hola! Claro que sí. ¿Se trata de una urgencia o es una revisión rutinaria para su gato?', step: 2 },
                         { type: 'user', text: 'Es solo una revisión rutinaria.', step: 3 },
-                        { type: 'bot', text: 'De acuerdo. Para una revisión rutinaria, tenemos disponibilidad el próximo miércoles a las 10:00. ¿Le vendría bien esa hora?', step: 4 },
+                        { type: 'bot', text: 'De acuerdo. Para una revisión rutinaria, ¿podría indicarme su nombre y el nombre de su gato, por favor?', step: 3, requiresPetOwnerNames: true },
+                        { type: 'user', text: 'Claro, soy {OWNER_NAME} y mi gato se llama {PET_NAME}.', step: 3, dynamicOwnerName: true, dynamicPetName: true },
+                        { type: 'bot', text: 'Perfecto, {OWNER_NAME}. Para la revisión de {PET_NAME}, tenemos disponibilidad el próximo miércoles a las 10:00. ¿Le vendría bien esa hora?', step: 4, dynamicOwnerName: true, dynamicPetName: true },
                         { type: 'user', text: 'Sí, el miércoles a las 10:00 está perfecto.', step: 4 },
-                        { type: 'bot', text: 'Genial. Hemos agendado la cita para la revisión de su perro para el miércoles a las 10:00. ¿Hay algo más en lo que pueda ayudarle?', step: 4 },
+                        { type: 'bot', text: 'Genial. Hemos reservado la cita para la revisión de {PET_NAME} para el miércoles a las 10:00. ¿Hay algo más en lo que pueda ayudarle?', step: 4, dynamicPetName: true },
                         { type: 'user', text: 'No, eso es todo. ¡Muchas gracias!', step: 4 },
                         { type: 'bot', text: 'A usted. ¡Que tenga un buen día!', step: 4 }
                     ],
@@ -361,9 +364,11 @@
                         { type: 'user', text: '¡Hola! Quería informarme sobre el servicio de peluquería para mi perro.', step: 1 },
                         { type: 'bot', text: '¡Hola! Claro, ofrecemos servicio completo de peluquería canina. ¿Le gustaría reservar una cita?', step: 2 }, 
                         { type: 'user', text: 'Sí, por favor.', step: 3 }, 
-                        { type: 'bot', text: 'Perfecto. Tenemos disponibilidad para peluquería el próximo viernes a las 12:00. ¿Le vendría bien?', step: 4 },
+                        { type: 'bot', text: 'Perfecto. Para la peluquería, ¿podría decirme su nombre y el de su perro?', step: 3, requiresPetOwnerNames: true },
+                        { type: 'user', text: 'Soy {OWNER_NAME} y mi perro es {PET_NAME}.', step: 3, dynamicOwnerName: true, dynamicPetName: true },
+                        { type: 'bot', text: 'Gracias, {OWNER_NAME}. Tenemos disponibilidad para {PET_NAME} el próximo viernes a las 12:00. ¿Le vendría bien?', step: 4, dynamicOwnerName: true, dynamicPetName: true },
                         { type: 'user', text: 'El viernes a las 12:00 me va genial.', step: 4 },
-                        { type: 'bot', text: 'Estupendo. Hemos reservado su cita para peluquería canina para el viernes a las 12:00. ¡Le esperamos!', step: 4 }
+                        { type: 'bot', text: 'Estupendo. Hemos reservado su cita para peluquería canina para {PET_NAME} el viernes a las 12:00. ¡Le esperamos!', step: 4, dynamicPetName: true }
                     ]
                 ]
             }
@@ -393,7 +398,7 @@
                         generateFlowVisualization(scenariosData[selectedSubScenarioKey].flow);
                         chatArea.innerHTML = `<p class="text-center text-gray-500 p-4">Pulse "Iniciar demo" para ver la simulación de: ${scenariosData[selectedSubScenarioKey].description}</p>`;
                     }
-                    // Ocultar los divs de sub-escenarios (ya no se usan directamente para selección)
+                    // Ocultar divs de sub-escenarios (ya no se usan para selección)
                     document.getElementById('subScenarioSelectorDentist').classList.add('hidden');
                     document.getElementById('subScenarioSelectorRestaurant').classList.add('hidden');
                     document.getElementById('subScenarioSelectorVeterinarian').classList.add('hidden');
@@ -414,8 +419,14 @@
         
         function addMessageToChat(type, text) {
             let processedText = text;
-            if (text.includes("{CLIENT_NAME}")) {
+            if (text.includes("{CLIENT_NAME}")) { // Para restaurante
                 processedText = text.replace(/{CLIENT_NAME}/g, currentDemoClientName);
+            }
+            if (text.includes("{OWNER_NAME}")) { // Para veterinario
+                processedText = text.replace(/{OWNER_NAME}/g, currentOwnerName);
+            }
+            if (text.includes("{PET_NAME}")) { // Para veterinario
+                processedText = text.replace(/{PET_NAME}/g, currentPetName);
             }
             return new Promise(resolve => {
                 const bubble = document.createElement('div');
@@ -483,6 +494,9 @@
                 if (selectedSubScenarioKey === 'veterinarian_consulta_general') {
                     currentVetSequenceIndex = (currentVetSequenceIndex + 1) % scenario.sequences.length; 
                     currentScenarioMessages = scenario.sequences[currentVetSequenceIndex];
+                    // Asignar nombres aleatorios para dueño y mascota para la secuencia actual de veterinario
+                    currentOwnerName = randomClientNames[Math.floor(Math.random() * randomClientNames.length)];
+                    currentPetName = randomPetNames[Math.floor(Math.random() * randomPetNames.length)];
                 } else if (selectedSubScenarioKey === 'dentist_consulta_general') {
                     currentDentalSequenceIndex = (currentDentalSequenceIndex + 1) % scenario.sequences.length;
                     currentScenarioMessages = scenario.sequences[currentDentalSequenceIndex];
@@ -493,9 +507,8 @@
             
             if (selectedSubScenarioKey === 'restaurant_reserva') { 
                 currentDemoClientName = randomClientNames[Math.floor(Math.random() * randomClientNames.length)];
-            } else {
-                currentDemoClientName = "Cliente"; 
             }
+            // Para dentista y veterinario, el nombre del cliente/dueño se maneja con placeholders si es necesario en la secuencia
 
             playDemoButton.disabled = true;
             const originalButtonText = playDemoButton.querySelector('span').textContent;
@@ -516,28 +529,47 @@
                     updateFlowActiveStep(currentFlowStepNumber);
                 }
                 
-                const delay = message.delay || (i === 0 ? 300 : 1800); 
+                const delay = message.delay || (i === 0 ? 300 : 1800); // Delay más rápido entre mensajes
                 await new Promise(resolve => setTimeout(resolve, delay));
                 await addMessageToChat(message.type, message.text);
             }
             
             updateFlowActiveStep(currentFlowStepNumber + 1); 
 
-            const scenarioKeyThatJustPlayed = selectedSubScenarioKey;
+            // Lógica para el bucle automático de 3 segundos SOLO si hay más secuencias para el MISMO tipo de negocio
             const scenarioObjectThatJustPlayed = scenario;
+            const justPlayedScenarioKey = selectedSubScenarioKey; // Guardar la clave del escenario que acaba de reproducirse
 
-            if (scenarioObjectThatJustPlayed.sequences && scenarioObjectThatJustPlayed.sequences.length > 1) {
-                demoLoopTimeout = setTimeout(() => {
-                    if (selectedSubScenarioKey === scenarioKeyThatJustPlayed && playDemoButton.disabled) {
-                        startDemo(); 
-                    } else {
-                        if(playDemoButton.disabled){ // Solo re-habilitar si no fue habilitado por otra acción
-                           playDemoButton.disabled = false;
-                           playDemoButton.querySelector('span').textContent = originalButtonText;
+            if (scenarioObjectThatJustPlayed.sequences && scenarioObjectThatJustPlayed.sequences.length > 0) {
+                 // Comprobar si es la última secuencia del array para este tipo de negocio
+                let isLastSequence = false;
+                if (justPlayedScenarioKey === 'veterinarian_consulta_general') {
+                    isLastSequence = currentVetSequenceIndex === (scenarioObjectThatJustPlayed.sequences.length - 1);
+                } else if (justPlayedScenarioKey === 'dentist_consulta_general') {
+                    isLastSequence = currentDentalSequenceIndex === (scenarioObjectThatJustPlayed.sequences.length - 1);
+                }
+
+                if (!isLastSequence) { // Si NO es la última secuencia, programar la siguiente
+                    demoLoopTimeout = setTimeout(() => {
+                        // Solo reiniciar si el usuario NO ha cambiado de escenario principal
+                        if (selectedSubScenarioKey === justPlayedScenarioKey && playDemoButton.disabled) { 
+                            startDemo(); 
+                        } else {
+                            // Si el usuario cambió de escenario, o el botón ya no está deshabilitado, no reiniciar y re-habilitar el botón.
+                            if(playDemoButton.disabled){ 
+                               playDemoButton.disabled = false;
+                               playDemoButton.querySelector('span').textContent = originalButtonText;
+                            }
                         }
-                    }
-                }, 3000);
-            } else {
+                    }, 3000); // Pausa de 3 segundos
+                } else { // Si ES la última secuencia, simplemente reactivar el botón
+                    playDemoButton.disabled = false;
+                    playDemoButton.querySelector('span').textContent = originalButtonText;
+                    // Resetear los índices para que la próxima vez que se pulse "Iniciar Demo" para este escenario, comience desde la primera secuencia.
+                    if (justPlayedScenarioKey === 'veterinarian_consulta_general') currentVetSequenceIndex = -1;
+                    if (justPlayedScenarioKey === 'dentist_consulta_general') currentDentalSequenceIndex = -1;
+                }
+            } else { // Para escenarios sin múltiples secuencias (como restaurante)
                 playDemoButton.disabled = false;
                 playDemoButton.querySelector('span').textContent = originalButtonText;
             }
@@ -560,3 +592,4 @@
 
 </body>
 </html>
+
