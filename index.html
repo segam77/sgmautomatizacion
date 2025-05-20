@@ -107,25 +107,9 @@
         .flow-step.completed + .flow-line { background-color: #10B981; }
         .flow-text { font-size: 0.75rem; font-weight: 500; max-width: 80px; line-height: 1.2; }
 
-        .scenario-selector button { margin: 0.25rem; } /* Reducido el margen general para botones de escenario */
-        .sub-scenario-selector { margin-top: 1rem; min-height: 50px; }
-        .sub-scenario-selector button {
-             display: block; /* Hace que los botones ocupen todo el ancho disponible */
-             width: 80%; /* O un ancho específico que funcione bien */
-             margin-left: auto;
-             margin-right: auto;
-             margin-bottom: 0.75rem; /* Espacio entre botones apilados */
+        .scenario-selector button { 
+            margin: 0.5rem; 
         }
-        @media (min-width: 640px) { /* sm breakpoint de Tailwind */
-            .sub-scenario-selector button {
-                display: inline-block; /* Vuelven a estar en línea en pantallas más grandes */
-                width: auto; /* Ancho automático */
-                margin-left: 0.25rem; /* Restaura margen horizontal */
-                margin-right: 0.25rem;
-                margin-bottom: 0.5rem; /* Margen inferior original */
-            }
-        }
-
     </style>
 </head>
 <body class="bg-gray-50">
@@ -214,25 +198,19 @@
     <section id="demo" class="py-16 md:py-24 bg-gray-100">
         <div class="container mx-auto px-6">
             <h2 class="section-title text-3xl md:text-4xl font-semibold text-center text-gray-800">Demostración automática</h2>
-            <p class="text-center text-gray-600 mb-6 text-lg max-w-xl mx-auto">Seleccione un tipo de negocio y una acción para ver una simulación de nuestro chatbot.</p>
+            <p class="text-center text-gray-600 mb-6 text-lg max-w-xl mx-auto">Seleccione un tipo de negocio para ver una simulación de nuestro chatbot.</p>
             
             <div class="max-w-xl mx-auto bg-white p-6 sm:p-8 rounded-xl shadow-2xl">
                 <div class="scenario-selector text-center mb-4">
-                    <p class="font-semibold mb-2 text-gray-700">1. Elija el tipo de negocio:</p>
-                    <button id="selectDentist" data-scenario="dentist" class="action-button bg-sky-500 hover:bg-sky-600 text-white font-medium py-2 px-4 rounded-lg">Clínica dental</button>
-                    <button id="selectRestaurant" data-scenario="restaurant" class="action-button bg-amber-500 hover:bg-amber-600 text-white font-medium py-2 px-4 rounded-lg">Restaurante</button>
+                    <p class="font-semibold mb-2 text-gray-700">Elija el tipo de negocio:</p>
+                    <button id="selectDentist" data-sub_scenario="dentist_consulta_general" class="action-button bg-sky-500 hover:bg-sky-600 text-white font-medium py-2 px-4 rounded-lg">Clínica dental</button>
+                    <button id="selectRestaurant" data-sub_scenario="restaurant_reserva" class="action-button bg-amber-500 hover:bg-amber-600 text-white font-medium py-2 px-4 rounded-lg">Restaurante</button>
+                    <button id="selectVeterinarian" data-sub_scenario="veterinarian_consulta_general" class="action-button bg-emerald-500 hover:bg-emerald-600 text-white font-medium py-2 px-4 rounded-lg">Veterinario</button>
                 </div>
-
-                <div id="subScenarioSelectorDentist" class="sub-scenario-selector text-center hidden">
-                    <p class="font-semibold mb-2 text-gray-700">2. ¿Qué desea simular para la clínica dental?</p>
-                    <button data-sub_scenario="dentist_cita" class="action-button bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded-lg">Pedir cita completa</button>
-                    <button data-sub_scenario="dentist_precio" class="action-button bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded-lg">Consultar precio limpieza</button>
-                </div>
-
-                <div id="subScenarioSelectorRestaurant" class="sub-scenario-selector text-center hidden">
-                    <p class="font-semibold mb-2 text-gray-700">2. ¿Qué desea simular para el restaurante?</p>
-                    <button data-sub_scenario="restaurant_reserva" class="action-button bg-orange-500 hover:bg-orange-600 text-white font-medium py-2 px-4 rounded-lg">Reservar mesa</button>
-                </div>
+                
+                <div id="subScenarioSelectorDentist" class="hidden"></div>
+                <div id="subScenarioSelectorRestaurant" class="hidden"></div>
+                <div id="subScenarioSelectorVeterinarian" class="hidden"></div>
                 
                 <div class="flex justify-center my-8">
                     <button id="playDemoButton" class="action-button bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-8 rounded-lg text-lg flex items-center space-x-3" disabled>
@@ -284,8 +262,7 @@
     <script>
         const selectDentistButton = document.getElementById('selectDentist');
         const selectRestaurantButton = document.getElementById('selectRestaurant');
-        const subScenarioSelectorDentist = document.getElementById('subScenarioSelectorDentist');
-        const subScenarioSelectorRestaurant = document.getElementById('subScenarioSelectorRestaurant');
+        const selectVeterinarianButton = document.getElementById('selectVeterinarian');
         const playDemoButton = document.getElementById('playDemoButton'); 
         const chatArea = document.getElementById('chatArea');
         const demoFlowVisualization = document.getElementById('demoFlowVisualization');
@@ -294,50 +271,46 @@
         
         document.getElementById('currentYear').textContent = new Date().getFullYear();
 
-        let selectedMainScenario = null;
-        let selectedSubScenarioKey = null;
+        let selectedSubScenarioKey = null; 
         let currentDemoClientName = "Cliente"; 
+        let currentVetSequenceIndex = 0; 
+        let currentDentalSequenceIndex = 0;
+        let demoLoopTimeout = null; 
 
         const randomClientNames = ["Ana", "Carlos", "Laura", "David", "Sofía", "Javier", "Elena", "Miguel", "Lucía", "Pablo"];
 
         const scenariosData = {
-            'dentist_cita': {
-                description: "Simulación de reserva de cita completa en clínica dental.",
-                flow: [
-                    { name: "Solicitud cita", icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M10 2a8 8 0 100 16 8 8 0 000-16zm0 14a6 6 0 110-12 6 6 0 010 12zm-1-8a1 1 0 011-1h2a1 1 0 110 2h-2a1 1 0 01-1-1zm0 4a1 1 0 011-1h2a1 1 0 110 2h-2a1 1 0 01-1-1z"/></svg>' },
-                    { name: "Cita reservada", icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd" /></svg>' },
-                    { name: "Recordatorio", icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M10 2c-4.42 0-8 3.13-8 7s3.58 7 8 7a8.03 8.03 0 005.44-2.02l.85.85a1 1 0 001.42-1.42l-.85-.85A7.98 7.98 0 0018 9c0-3.87-3.58-7-8-7zm0 12c-2.76 0-5-1.79-5-5s2.24-5 5-5 5 1.79 5 5-2.24 5-5 5zm1-6a1 1 0 11-2 0V6a1 1 0 112 0v2zm0 3a1 1 0 01-1 1H9a1 1 0 110-2h1a1 1 0 011 1z"/></svg>' },
-                    { name: "Valoración", icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>' }
+            'dentist_consulta_general': { 
+                description: "Simulación de consulta dental general (se mostrará un flujo al azar).",
+                flow: [ 
+                    { name: "Contacto inicial", icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M10 2a8 8 0 100 16 8 8 0 000-16zm0 14a6 6 0 110-12 6 6 0 010 12zm-1-8a1 1 0 011-1h2a1 1 0 110 2h-2a1 1 0 01-1-1zm0 4a1 1 0 011-1h2a1 1 0 110 2h-2a1 1 0 01-1-1z"/></svg>' },
+                    { name: "Identificar servicio", icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-13a1 1 0 10-2 0v.268a6.964 6.964 0 000 1.464V9a1 1 0 102 0V6.732a6.964 6.964 0 000-1.464V5zm-1 6a1 1 0 100 2h.01a1 1 0 100-2H10z" clip-rule="evenodd" /></svg>' },
+                    { name: "Procesar solicitud", icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" /></svg>' },
+                    { name: "Resolución", icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>' }
                 ],
-                messages: [ 
-                    { type: 'user', text: 'Buenas tardes, me gustaría pedir cita para una revisión la semana que viene, por favor.', step: 1 },
-                    { type: 'bot', text: '¡Buenas tardes! Será un placer ayudarle. Permítame un momento para consultar la disponibilidad...', step: 1 },
-                    { type: 'bot', text: 'Tenemos hueco el martes a las 11:00 o el jueves a las 16:30. ¿Cuál de estas opciones le vendría bien?', step: 1 },
-                    { type: 'user', text: 'El martes a las 11:00 me parece perfecto.', step: 1 }, 
-                    { type: 'bot', text: 'Estupendo. Su cita para revisión ha sido confirmada para el martes a las 11:00.', step: 2 }, 
-                    { type: 'bot', text: 'Anotando la cita en su calendario...', step: 2 },
-                    { type: 'bot', text: 'Le recordamos su cita para la revisión mañana martes a las 11:00. ¡Le esperamos!', step: 3, delay: 2000 }, 
-                    { type: 'bot', text: '¡Hola de nuevo! Esperamos que su visita del martes fuera satisfactoria. ¿Qué tal fue todo?', step: 4, delay: 2500 }, 
-                    { type: 'user', text: '¡Todo fue genial en la cita, muchas gracias!', step: 4 }, 
-                    { type: 'bot', text: 'Nos alegra mucho saber que su experiencia fue positiva. Si tiene un momento, ¿podría dejarnos una valoración en Google? Su opinión nos ayuda a mejorar. [Enlace a Google Reviews]', step: 4 }
+                sequences: [
+                    [ 
+                        { type: 'user', text: 'Buenas tardes, me gustaría pedir cita para una revisión la semana que viene, por favor.', step: 1 },
+                        { type: 'bot', text: '¡Buenas tardes! Será un placer ayudarle. Permítame un momento para consultar la disponibilidad...', step: 2 },
+                        { type: 'bot', text: 'Tenemos hueco el martes a las 11:00 o el jueves a las 16:30. ¿Cuál de estas opciones le vendría bien?', step: 2 },
+                        { type: 'user', text: 'El martes a las 11:00 me parece perfecto.', step: 3 }, 
+                        { type: 'bot', text: 'Estupendo. Su cita para revisión ha sido confirmada para el martes a las 11:00.', step: 4 }, 
+                        { type: 'bot', text: 'Anotando la cita en su calendario...', step: 4 },
+                        { type: 'bot', text: 'Le recordamos su cita para la revisión mañana martes a las 11:00. ¡Le esperamos!', step: 4, delay: 2000 }, 
+                        { type: 'bot', text: '¡Hola de nuevo! Esperamos que su visita del martes fuera satisfactoria. ¿Qué tal fue todo?', step: 4, delay: 2500 }, 
+                        { type: 'user', text: '¡Todo fue genial en la cita, muchas gracias!', step: 4 }, 
+                        { type: 'bot', text: 'Nos alegra mucho saber que su experiencia fue positiva. Si tiene un momento, ¿podría dejarnos una valoración en Google? Su opinión nos ayuda a mejorar. [Enlace a Google Reviews]', step: 4 }
+                    ],
+                    [ 
+                        { type: 'user', text: 'Hola, ¿me podría decir el precio de una limpieza dental, por favor?', step: 1 },
+                        { type: 'bot', text: '¡Hola! Por supuesto. El precio de la limpieza dental es de 50€. Incluye revisión y pulido.', step: 2 },
+                        { type: 'bot', text: '¿Desea que le ayude a reservar una cita para su limpieza?', step: 3 },
+                        { type: 'user', text: 'De momento solo quería saber el precio, gracias.', step: 3 },
+                        { type: 'bot', text: 'Entendido. Si cambia de opinión o tiene más preguntas, no dude en consultarnos. ¡Que tenga un buen día!', step: 4 }
+                    ]
                 ]
             },
-            'dentist_precio': {
-                description: "Simulación de consulta de precio para limpieza dental.",
-                flow: [
-                    { name: "Solicitud precio", icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 2a8 8 0 100-16 8 8 0 000 16zm1-13a1 1 0 10-2 0v2.085a4.002 4.002 0 00-1.418.987l-.004.003-.004.003a1 1 0 101.418 1.411l.004-.003.004-.003A2.002 2.002 0 0112 6.5V3a1 1 0 00-1-1zm-1 6a2 2 0 100 4 2 2 0 000-4zm0 6a4 4 0 100-8 4 4 0 000 8z" clip-rule="evenodd"></path></svg>' },
-                    { name: "Info entregada", icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg>' },
-                    { name: "Oferta cita", icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M10 2a8 8 0 100 16 8 8 0 000-16zm0 14a6 6 0 110-12 6 6 0 010 12zm-1-8a1 1 0 011-1h2a1 1 0 110 2h-2a1 1 0 01-1-1zm0 4a1 1 0 011-1h2a1 1 0 110 2h-2a1 1 0 01-1-1z"/></svg>' }
-                ],
-                messages: [
-                    { type: 'user', text: 'Hola, ¿me podría decir el precio de una limpieza dental, por favor?', step: 1 },
-                    { type: 'bot', text: '¡Hola! Por supuesto. El precio de la limpieza dental es de 50€. Incluye revisión y pulido.', step: 2 },
-                    { type: 'bot', text: '¿Desea que le ayude a reservar una cita para su limpieza?', step: 3 },
-                    { type: 'user', text: 'De momento solo quería saber el precio, gracias.', step: 3 },
-                    { type: 'bot', text: 'Entendido. Si cambia de opinión o tiene más preguntas, no dude en consultarnos. ¡Que tenga un buen día!', step: 3 }
-                ]
-            },
-            'restaurant_reserva': {
+            'restaurant_reserva': { 
                 description: "Simulación de reserva de mesa en restaurante.",
                 flow: [
                     { name: "Solicitud reserva", icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M10 2a8 8 0 100 16 8 8 0 000-16zm0 14a6 6 0 110-12 6 6 0 010 12zm-1-8a1 1 0 011-1h2a1 1 0 110 2h-2a1 1 0 01-1-1zm0 4a1 1 0 011-1h2a1 1 0 110 2h-2a1 1 0 01-1-1z"/></svg>' },
@@ -345,16 +318,53 @@
                     { name: "Fecha y hora", icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd" /></svg>' },
                     { name: "Confirmación", icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>' }
                 ],
-                messages: [
+                messages: [ 
                     { type: 'user', text: 'Buenas, me gustaría reservar una mesa.', step: 1 },
                     { type: 'bot', text: '¡Hola! Estupendo. ¿Para cuántas personas sería la reserva?', step: 2 },
                     { type: 'user', text: 'Seríamos 4 personas.', step: 2 },
                     { type: 'bot', text: 'Perfecto. ¿Para qué día y hora desearía la reserva?', step: 3 },
                     { type: 'user', text: 'Para este sábado a las 21:00, si es posible.', step: 3 },
-                    { type: 'bot', text: 'Un momento, voy a comprobar...', step: 4, delay: 1200 }, // Mensaje 1
-                    { type: 'bot', text: 'Sí, tenemos disponibilidad. Mesa para 4 personas el sábado a las 21:00. ¿A nombre de quién hago la reserva?', step: 4 }, // Mensaje 2
+                    { type: 'bot', text: 'Un momento, voy a comprobar...', step: 4, delay: 1200 },
+                    { type: 'bot', text: 'Sí, tenemos disponibilidad. Mesa para 4 personas el sábado a las 21:00. ¿A nombre de quién hago la reserva?', step: 4 },
                     { type: 'user', text: 'A nombre de {CLIENT_NAME}, por favor.', step: 4, dynamicName: true },
                     { type: 'bot', text: '¡Muy bien, {CLIENT_NAME}! Su reserva para 4 personas el sábado a las 21:00 está confirmada. ¡Les esperamos!', step: 4, dynamicName: true }
+                ]
+            },
+            'veterinarian_consulta_general': { 
+                description: "Simulación de consulta general veterinaria (se mostrará un flujo al azar).",
+                flow: [ 
+                    { name: "Contacto inicial", icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M10 2a8 8 0 100 16 8 8 0 000-16zm0 14a6 6 0 110-12 6 6 0 010 12zm-1-8a1 1 0 011-1h2a1 1 0 110 2h-2a1 1 0 01-1-1zm0 4a1 1 0 011-1h2a1 1 0 110 2h-2a1 1 0 01-1-1z"/></svg>' },
+                    { name: "Identificar necesidad", icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-13a1 1 0 10-2 0v.268a6.964 6.964 0 000 1.464V9a1 1 0 102 0V6.732a6.964 6.964 0 000-1.464V5zm-1 6a1 1 0 100 2h.01a1 1 0 100-2H10z" clip-rule="evenodd" /></svg>' },
+                    { name: "Triaje/Decisión", icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" /></svg>' }, 
+                    { name: "Resolución", icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>' }
+                ],
+                sequences: [
+                    [ 
+                        { type: 'user', text: 'Hola, necesito una revisión para mi perro, por favor.', step: 1 },
+                        { type: 'bot', text: '¡Hola! Entendido. Para poder ayudarle mejor, ¿podría indicarme si se trata de una urgencia o es una revisión rutinaria?', step: 2 },
+                        { type: 'user', text: 'Es bastante urgente, mi perro no se encuentra bien.', step: 3 },
+                        { type: 'bot', text: 'Comprendo su preocupación. En caso de urgencia, lo más importante es que su perro reciba atención lo antes posible. Le recomendamos que acuda directamente a nuestra clínica. Estamos en Calle Falsa 123.', step: 4 },
+                        { type: 'user', text: 'De acuerdo, iremos para allá. Gracias.', step: 4 },
+                        { type: 'bot', text: 'Perfecto. Les esperamos. Si necesita indicaciones para llegar, no dude en preguntar. Esperamos que todo vaya bien.', step: 4 }
+                    ],
+                    [ 
+                        { type: 'user', text: 'Hola, me gustaría pedir cita para una revisión para mi perro.', step: 1 },
+                        { type: 'bot', text: '¡Hola! Claro que sí. ¿Se trata de una urgencia o es una revisión rutinaria?', step: 2 },
+                        { type: 'user', text: 'Es solo una revisión rutinaria.', step: 3 },
+                        { type: 'bot', text: 'De acuerdo. Para una revisión rutinaria, tenemos disponibilidad el próximo miércoles a las 10:00. ¿Le vendría bien esa hora?', step: 4 },
+                        { type: 'user', text: 'Sí, el miércoles a las 10:00 está perfecto.', step: 4 },
+                        { type: 'bot', text: 'Genial. Hemos agendado la cita para la revisión de su perro para el miércoles a las 10:00. ¿Hay algo más en lo que pueda ayudarle?', step: 4 },
+                        { type: 'user', text: 'No, eso es todo. ¡Muchas gracias!', step: 4 },
+                        { type: 'bot', text: 'A usted. ¡Que tenga un buen día!', step: 4 }
+                    ],
+                    [ 
+                        { type: 'user', text: '¡Hola! Quería informarme sobre el servicio de peluquería para mi perro.', step: 1 },
+                        { type: 'bot', text: '¡Hola! Claro, ofrecemos servicio completo de peluquería canina. ¿Le gustaría reservar una cita?', step: 2 }, 
+                        { type: 'user', text: 'Sí, por favor.', step: 3 }, 
+                        { type: 'bot', text: 'Perfecto. Tenemos disponibilidad para peluquería el próximo viernes a las 12:00. ¿Le vendría bien?', step: 4 },
+                        { type: 'user', text: 'El viernes a las 12:00 me va genial.', step: 4 },
+                        { type: 'bot', text: 'Estupendo. Hemos reservado su cita para peluquería canina para el viernes a las 12:00. ¡Le esperamos!', step: 4 }
+                    ]
                 ]
             }
         };
@@ -365,49 +375,41 @@
         }
 
         function initializeDemoSelection() {
-            selectDentistButton.addEventListener('click', () => {
-                selectedMainScenario = 'dentist';
-                setActiveButton(selectDentistButton.parentElement, selectDentistButton);
-                subScenarioSelectorDentist.classList.remove('hidden');
-                subScenarioSelectorRestaurant.classList.add('hidden');
-                resetSubScenarioSelection(subScenarioSelectorRestaurant);
-                clearDemoInterface();
-            });
+            const mainScenarioButtons = [
+                selectDentistButton, 
+                selectRestaurantButton, 
+                selectVeterinarianButton
+            ];
 
-            selectRestaurantButton.addEventListener('click', () => {
-                selectedMainScenario = 'restaurant';
-                setActiveButton(selectRestaurantButton.parentElement, selectRestaurantButton);
-                subScenarioSelectorRestaurant.classList.remove('hidden');
-                subScenarioSelectorDentist.classList.add('hidden');
-                resetSubScenarioSelection(subScenarioSelectorDentist);
-                clearDemoInterface();
-            });
+            mainScenarioButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    mainScenarioButtons.forEach(btn => btn.classList.remove('selected'));
+                    button.classList.add('selected');
 
-            [subScenarioSelectorDentist, subScenarioSelectorRestaurant].forEach(selector => {
-                selector.addEventListener('click', (event) => {
-                    if (event.target.tagName === 'BUTTON') {
-                        selectedSubScenarioKey = event.target.dataset.sub_scenario;
-                        setActiveButton(selector, event.target);
-                        playDemoButton.disabled = false; 
-                        if (scenariosData[selectedSubScenarioKey]) {
-                            generateFlowVisualization(scenariosData[selectedSubScenarioKey].flow);
-                            chatArea.innerHTML = `<p class="text-center text-gray-500 p-4">Pulse "Iniciar demo" para ver la simulación de: ${scenariosData[selectedSubScenarioKey].description}</p>`;
-                        }
+                    selectedSubScenarioKey = button.dataset.sub_scenario; 
+                    playDemoButton.disabled = false; 
+                    
+                    if (scenariosData[selectedSubScenarioKey]) {
+                        generateFlowVisualization(scenariosData[selectedSubScenarioKey].flow);
+                        chatArea.innerHTML = `<p class="text-center text-gray-500 p-4">Pulse "Iniciar demo" para ver la simulación de: ${scenariosData[selectedSubScenarioKey].description}</p>`;
                     }
+                    // Ocultar los divs de sub-escenarios (ya no se usan directamente para selección)
+                    document.getElementById('subScenarioSelectorDentist').classList.add('hidden');
+                    document.getElementById('subScenarioSelectorRestaurant').classList.add('hidden');
+                    document.getElementById('subScenarioSelectorVeterinarian').classList.add('hidden');
                 });
             });
         }
         
-        function resetSubScenarioSelection(selectorToReset) {
-            setActiveButton(selectorToReset, null);
-            playDemoButton.disabled = true; 
-        }
-
         function clearDemoInterface() {
-            chatArea.innerHTML = '<p class="text-center text-gray-500 p-4">Seleccione un tipo de negocio y una acción.</p>';
+            chatArea.innerHTML = '<p class="text-center text-gray-500 p-4">Seleccione un tipo de negocio para iniciar la demostración.</p>';
             demoFlowVisualization.innerHTML = '';
             updateFlowActiveStep(0); 
             playDemoButton.disabled = true; 
+            if (demoLoopTimeout) {
+                clearTimeout(demoLoopTimeout); 
+                demoLoopTimeout = null;
+            }
         }
         
         function addMessageToChat(type, text) {
@@ -469,8 +471,27 @@
                 chatArea.innerHTML = '<p class="text-center text-red-500 p-4">Por favor, seleccione un escenario completo antes de iniciar la demo.</p>';
                 return;
             }
+            if (demoLoopTimeout) { 
+                clearTimeout(demoLoopTimeout);
+                demoLoopTimeout = null;
+            }
 
-            if (selectedSubScenarioKey === 'restaurant_reserva') {
+            let currentScenarioMessages;
+            const scenario = scenariosData[selectedSubScenarioKey];
+
+            if (scenario.sequences && scenario.sequences.length > 0) {
+                if (selectedSubScenarioKey === 'veterinarian_consulta_general') {
+                    currentVetSequenceIndex = (currentVetSequenceIndex + 1) % scenario.sequences.length; 
+                    currentScenarioMessages = scenario.sequences[currentVetSequenceIndex];
+                } else if (selectedSubScenarioKey === 'dentist_consulta_general') {
+                    currentDentalSequenceIndex = (currentDentalSequenceIndex + 1) % scenario.sequences.length;
+                    currentScenarioMessages = scenario.sequences[currentDentalSequenceIndex];
+                }
+            } else {
+                currentScenarioMessages = scenario.messages; 
+            }
+            
+            if (selectedSubScenarioKey === 'restaurant_reserva') { 
                 currentDemoClientName = randomClientNames[Math.floor(Math.random() * randomClientNames.length)];
             } else {
                 currentDemoClientName = "Cliente"; 
@@ -480,10 +501,11 @@
             const originalButtonText = playDemoButton.querySelector('span').textContent;
             playDemoButton.querySelector('span').textContent = 'Procesando...';
             
-            chatArea.innerHTML = ''; 
+            if (chatArea.querySelector('p.text-gray-500')) { 
+                 chatArea.innerHTML = '';
+            }
             updateFlowActiveStep(0); 
 
-            const currentScenarioMessages = scenariosData[selectedSubScenarioKey].messages;
             let currentFlowStepNumber = 0;
 
             for (let i = 0; i < currentScenarioMessages.length; i++) {
@@ -501,10 +523,24 @@
             
             updateFlowActiveStep(currentFlowStepNumber + 1); 
 
-            setTimeout(() => {
+            const scenarioKeyThatJustPlayed = selectedSubScenarioKey;
+            const scenarioObjectThatJustPlayed = scenario;
+
+            if (scenarioObjectThatJustPlayed.sequences && scenarioObjectThatJustPlayed.sequences.length > 1) {
+                demoLoopTimeout = setTimeout(() => {
+                    if (selectedSubScenarioKey === scenarioKeyThatJustPlayed && playDemoButton.disabled) {
+                        startDemo(); 
+                    } else {
+                        if(playDemoButton.disabled){ // Solo re-habilitar si no fue habilitado por otra acción
+                           playDemoButton.disabled = false;
+                           playDemoButton.querySelector('span').textContent = originalButtonText;
+                        }
+                    }
+                }, 3000);
+            } else {
                 playDemoButton.disabled = false;
                 playDemoButton.querySelector('span').textContent = originalButtonText;
-            }, 2000);
+            }
         }
         
         if (contactForm) {
