@@ -27,7 +27,7 @@
             background-size: 100% 100%;
         }
         .hero-bg h1 { 
-            color: #F3F4F6; /* Color blanco/grisáceo para el H1 en cabecera */
+            color: #F3F4F6; 
         }
         .service-card {
             background-color: #FFFFFF; 
@@ -61,7 +61,7 @@
         }
         .chat-bubble.show { opacity: 1; transform: translateY(0); }
         
-        .action-button { /* Estilo para botones de selección de escenario */
+        .action-button { 
             padding: 0.75rem 1.5rem; 
             border-radius: 8px;
             font-weight: 500;
@@ -103,22 +103,22 @@
             transform: translateY(0px); 
         }
         
-        .hero-cta-button { /* Estilo específico para el botón "Ver demostración" en la cabecera */
-            background-color: #3B82F6; /* Azul Tailwind (bg-blue-500) */
+        .hero-cta-button { 
+            background-color: #3B82F6; 
             color: white;
-            padding: 0.75rem 2rem; /* Equivalente a py-3 px-8 de Tailwind */
-            font-size: 1.125rem; /* text-lg */
-            font-weight: 600; /* semibold */
-            border-radius: 0.5rem; /* rounded-lg */
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1); /* shadow-lg */
+            padding: 0.75rem 2rem; 
+            font-size: 1.125rem; 
+            font-weight: 600; 
+            border-radius: 0.5rem; 
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1); 
             transition: background-color 0.3s, transform 0.2s, box-shadow 0.3s;
             display: inline-block;
-            border: none; /* Sin borde explícito */
+            border: none; 
         }
         .hero-cta-button:hover {
-            background-color: #2563EB; /* Azul más oscuro (hover:bg-blue-600) */
+            background-color: #2563EB; 
             transform: scale(1.05);
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.1); /* Sombra más pronunciada en hover */
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.1); 
         }
 
         .play-demo-button { 
@@ -408,6 +408,7 @@
         let demoLoopTimeout = null; 
 
         const randomClientNames = ["Ana", "Carlos", "Laura", "David", "Sofía", "Javier", "Elena", "Miguel", "Lucía", "Pablo"];
+        const femaleOwnerNames = ["Ana", "Laura", "Sofía", "Elena", "Lucía", "Marta", "Sara", "Isabel", "Carmen"]; // Se mantiene, pero se usará David y Míriam específicamente
         const randomPetNames = ["Max", "Luna", "Coco", "Bella", "Rocky", "Lola", "Toby", "Nala", "Simba", "Kira"];
 
 
@@ -486,8 +487,8 @@
                         { type: 'bot', text: '¡Hola! Claro que sí. ¿Se trata de una urgencia o es una revisión rutinaria para su gato?', step: 2 },
                         { type: 'user', text: 'Es solo una revisión rutinaria.', step: 3 },
                         { type: 'bot', text: 'De acuerdo. Para una revisión rutinaria, ¿podría indicarme su nombre y el nombre de su gato, por favor?', step: 3, requiresPetOwnerNames: true },
-                        { type: 'user', text: 'Claro, soy {CLIENT_NAME} y mi gato se llama {PET_NAME}.', step: 3, dynamicOwnerName: true, dynamicPetName: true },
-                        { type: 'bot', text: 'Perfecto, {CLIENT_NAME}. Para la revisión de {PET_NAME}, tenemos disponibilidad el próximo miércoles a las 10:00. ¿Le vendría bien esa hora?', step: 4, dynamicOwnerName: true, dynamicPetName: true },
+                        { type: 'user', text: 'Claro, soy Andrea y mi gato se llama {PET_NAME}.', step: 3, dynamicOwnerName: true, dynamicPetName: true },
+                        { type: 'bot', text: 'Perfecto, Andrea. Para la revisión de {PET_NAME}, tenemos disponibilidad el próximo miércoles a las 10:00. ¿Le vendría bien esa hora?', step: 4, dynamicOwnerName: true, dynamicPetName: true },
                         { type: 'user', text: 'Sí, el miércoles a las 10:00 está perfecto.', step: 4 },
                         { type: 'bot', text: 'Genial. Hemos confirmado la cita para la revisión de {PET_NAME} para el miércoles a las 10:00. ¿Hay algo más en lo que pueda ayudarle?', step: 4, dynamicPetName: true },
                         { type: 'user', text: 'No, eso es todo. ¡Muchas gracias!', step: 4 },
@@ -498,8 +499,8 @@
                         { type: 'bot', text: '¡Hola! Claro, ofrecemos servicio completo de peluquería canina. ¿Le gustaría reservar una cita?', step: 2 }, 
                         { type: 'user', text: 'Sí, por favor.', step: 3 }, 
                         { type: 'bot', text: 'Perfecto. Para la peluquería, ¿podría decirme su nombre y el de su perro?', step: 3, requiresPetOwnerNames: true },
-                        { type: 'user', text: 'Soy {CLIENT_NAME} y mi perro es {PET_NAME}.', step: 3, dynamicOwnerName: true, dynamicPetName: true },
-                        { type: 'bot', text: 'Gracias, {CLIENT_NAME}. Tenemos disponibilidad para {PET_NAME} el próximo viernes a las 12:00. ¿Le vendría bien?', step: 4, dynamicOwnerName: true, dynamicPetName: true },
+                        { type: 'user', text: 'Soy Míriam y mi perro es {PET_NAME}.', step: 3, dynamicOwnerName: true, dynamicPetName: true },
+                        { type: 'bot', text: 'Gracias, Míriam. Tenemos disponibilidad para {PET_NAME} el próximo viernes a las 12:00. ¿Le vendría bien?', step: 4, dynamicOwnerName: true, dynamicPetName: true },
                         { type: 'user', text: 'El viernes a las 12:00 me va genial.', step: 4 },
                         { type: 'bot', text: 'Estupendo. Hemos confirmado su cita para peluquería canina para {PET_NAME} el viernes a las 12:00. ¡Le esperamos!', step: 4, dynamicPetName: true }
                     ]
@@ -636,11 +637,15 @@
                     currentScenarioMessages = scenario.sequences[currentVetSequenceIndex];
                     isLastSequenceOfCurrentType = currentVetSequenceIndex === (scenario.sequences.length - 1);
                     
-                    if (currentVetSequenceIndex === 1) { // Secuencia de revisión gato (índice 1)
-                        currentOwnerName = femaleOwnerNames[Math.floor(Math.random() * femaleOwnerNames.length)];
-                        currentPetName = "Misi"; 
-                    } else { // Otras secuencias de veterinario
+                    // Asignar nombres específicos para las secuencias del veterinario
+                    if (currentVetSequenceIndex === 0) { // Secuencia de Urgencia
                         currentOwnerName = randomClientNames[Math.floor(Math.random() * randomClientNames.length)];
+                        currentPetName = randomPetNames[Math.floor(Math.random() * randomPetNames.length)];
+                    } else if (currentVetSequenceIndex === 1) { // Secuencia de revisión gato
+                        currentOwnerName = "Míriam"; 
+                        currentPetName = "Misi"; 
+                    } else if (currentVetSequenceIndex === 2) { // Secuencia de peluquería
+                        currentOwnerName = "David"; 
                         currentPetName = randomPetNames[Math.floor(Math.random() * randomPetNames.length)];
                     }
 
@@ -649,9 +654,9 @@
                     currentScenarioMessages = scenario.sequences[currentDentalSequenceIndex];
                     isLastSequenceOfCurrentType = currentDentalSequenceIndex === (scenario.sequences.length - 1);
                     
-                    if (currentDentalSequenceIndex === 0) { // Secuencia de pedir cita completa
+                    if (currentDentalSequenceIndex === 0) { 
                          currentDemoClientName = randomClientNames[Math.floor(Math.random() * randomClientNames.length)];
-                    } else { // Secuencia de consultar precio
+                    } else {
                          currentDemoClientName = "Cliente"; 
                     }
                     currentOwnerName = currentDemoClientName; 
@@ -670,8 +675,7 @@
 
 
             playDemoButton.disabled = true;
-            // const originalButtonText = playDemoButton.querySelector('span').textContent; // No se cambia el texto
-            // playDemoButton.querySelector('span').textContent = 'Procesando...'; // No se cambia el texto
+            // El texto del botón "Iniciar demo" no se cambia a "Procesando..."
             
             if (chatArea.querySelector('p.text-gray-500')) { 
                  chatArea.innerHTML = '';
