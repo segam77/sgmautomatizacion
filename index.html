@@ -408,7 +408,6 @@
         let demoLoopTimeout = null; 
 
         const randomClientNames = ["Ana", "Carlos", "Laura", "David", "Sofía", "Javier", "Elena", "Miguel", "Lucía", "Pablo"];
-        const femaleOwnerNames = ["Ana", "Laura", "Sofía", "Elena", "Lucía", "Marta", "Sara", "Isabel", "Carmen"];
         const randomPetNames = ["Max", "Luna", "Coco", "Bella", "Rocky", "Lola", "Toby", "Nala", "Simba", "Kira"];
 
 
@@ -487,8 +486,8 @@
                         { type: 'bot', text: '¡Hola! Claro que sí. ¿Se trata de una urgencia o es una revisión rutinaria para su gato?', step: 2 },
                         { type: 'user', text: 'Es solo una revisión rutinaria.', step: 3 },
                         { type: 'bot', text: 'De acuerdo. Para una revisión rutinaria, ¿podría indicarme su nombre y el nombre de su gato, por favor?', step: 3, requiresPetOwnerNames: true },
-                        { type: 'user', text: 'Claro, soy {OWNER_NAME} y mi gato se llama {PET_NAME}.', step: 3, dynamicOwnerName: true, dynamicPetName: true },
-                        { type: 'bot', text: 'Perfecto, {OWNER_NAME}. Para la revisión de {PET_NAME}, tenemos disponibilidad el próximo miércoles a las 10:00. ¿Le vendría bien esa hora?', step: 4, dynamicOwnerName: true, dynamicPetName: true },
+                        { type: 'user', text: 'Claro, soy {CLIENT_NAME} y mi gato se llama {PET_NAME}.', step: 3, dynamicOwnerName: true, dynamicPetName: true },
+                        { type: 'bot', text: 'Perfecto, {CLIENT_NAME}. Para la revisión de {PET_NAME}, tenemos disponibilidad el próximo miércoles a las 10:00. ¿Le vendría bien esa hora?', step: 4, dynamicOwnerName: true, dynamicPetName: true },
                         { type: 'user', text: 'Sí, el miércoles a las 10:00 está perfecto.', step: 4 },
                         { type: 'bot', text: 'Genial. Hemos confirmado la cita para la revisión de {PET_NAME} para el miércoles a las 10:00. ¿Hay algo más en lo que pueda ayudarle?', step: 4, dynamicPetName: true },
                         { type: 'user', text: 'No, eso es todo. ¡Muchas gracias!', step: 4 },
@@ -499,8 +498,8 @@
                         { type: 'bot', text: '¡Hola! Claro, ofrecemos servicio completo de peluquería canina. ¿Le gustaría reservar una cita?', step: 2 }, 
                         { type: 'user', text: 'Sí, por favor.', step: 3 }, 
                         { type: 'bot', text: 'Perfecto. Para la peluquería, ¿podría decirme su nombre y el de su perro?', step: 3, requiresPetOwnerNames: true },
-                        { type: 'user', text: 'Soy {OWNER_NAME} y mi perro es {PET_NAME}.', step: 3, dynamicOwnerName: true, dynamicPetName: true },
-                        { type: 'bot', text: 'Gracias, {OWNER_NAME}. Tenemos disponibilidad para {PET_NAME} el próximo viernes a las 12:00. ¿Le vendría bien?', step: 4, dynamicOwnerName: true, dynamicPetName: true },
+                        { type: 'user', text: 'Soy {CLIENT_NAME} y mi perro es {PET_NAME}.', step: 3, dynamicOwnerName: true, dynamicPetName: true },
+                        { type: 'bot', text: 'Gracias, {CLIENT_NAME}. Tenemos disponibilidad para {PET_NAME} el próximo viernes a las 12:00. ¿Le vendría bien?', step: 4, dynamicOwnerName: true, dynamicPetName: true },
                         { type: 'user', text: 'El viernes a las 12:00 me va genial.', step: 4 },
                         { type: 'bot', text: 'Estupendo. Hemos confirmado su cita para peluquería canina para {PET_NAME} el viernes a las 12:00. ¡Le esperamos!', step: 4, dynamicPetName: true }
                     ]
