@@ -408,7 +408,7 @@
         let demoLoopTimeout = null; 
 
         const randomClientNames = ["Ana", "Carlos", "Laura", "David", "Sofía", "Javier", "Elena", "Miguel", "Lucía", "Pablo"];
-        const femaleOwnerNames = ["Ana", "Laura", "Sofía", "Elena", "Lucía", "Marta", "Sara", "Isabel", "Carmen"]; 
+        // const femaleOwnerNames = ["Ana", "Laura", "Sofía", "Elena", "Lucía", "Marta", "Sara", "Isabel", "Carmen"]; // No se usará directamente si fijamos Míriam y David
         const randomPetNames = ["Max", "Luna", "Coco", "Bella", "Rocky", "Lola", "Toby", "Nala", "Simba", "Kira"];
 
 
@@ -637,7 +637,6 @@
                     currentScenarioMessages = scenario.sequences[currentVetSequenceIndex];
                     isLastSequenceOfCurrentType = currentVetSequenceIndex === (scenario.sequences.length - 1);
                     
-                    // Asignar nombres específicos para las secuencias del veterinario
                     if (currentVetSequenceIndex === 0) { // Secuencia de Urgencia
                         currentOwnerName = randomClientNames[Math.floor(Math.random() * randomClientNames.length)];
                         currentPetName = randomPetNames[Math.floor(Math.random() * randomPetNames.length)];
@@ -709,13 +708,13 @@
                     } else {
                         if(playDemoButton.disabled){ 
                            playDemoButton.disabled = false;
-                           playDemoButton.querySelector('span').textContent = originalButtonText;
+                           playDemoButton.querySelector('span:last-child').textContent = originalButtonText;
                         }
                     }
                 }, 3000); 
             } else { 
                 playDemoButton.disabled = false;
-                playDemoButton.querySelector('span').textContent = originalButtonText;
+                playDemoButton.querySelector('span:last-child').textContent = originalButtonText;
                 if (isLastSequenceOfCurrentType) {
                     if (selectedSubScenarioKey === 'veterinarian_consulta_general') currentVetSequenceIndex = -1;
                     if (selectedSubScenarioKey === 'dentist_consulta_general') currentDentalSequenceIndex = -1;
