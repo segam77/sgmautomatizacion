@@ -10,6 +10,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <style>
+        /* Estilos originales de tu index.html */
         body { 
             font-family: 'Roboto', sans-serif; 
             color: #374151; 
@@ -41,7 +42,7 @@
             transform: translateY(-5px);
             box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
         }
-        .chat-bubble {
+        .chat-bubble { /* Estilo original, se puede revisar si hay conflicto */
             padding: 12px 18px; border-radius: 22px; margin-bottom: 12px; max-width: 75%;
             opacity: 0; transform: translateY(20px);
             transition: opacity 0.6s cubic-bezier(0.25, 0.8, 0.25, 1), transform 0.6s cubic-bezier(0.25, 0.8, 0.25, 1);
@@ -149,7 +150,6 @@
             font-size: 1.5em; 
         }
 
-
         .contact-submit-button { 
             padding: 0.75rem 2rem;
             border-radius: 8px;
@@ -165,7 +165,6 @@
             transform: scale(1.03) translateY(-1px);
             box-shadow: 0 6px 12px rgba(59, 130, 246, 0.3);
         }
-
 
         .section-title { 
             position: relative;
@@ -213,14 +212,18 @@
             border-color: #3B82F6; 
             transform: scale(1.1); 
         }
-        .flow-step.active .flow-icon svg { color: #3B82F6; } 
+        .flow-step.active .flow-icon svg, .flow-step.active .flow-icon .material-icons { color: #3B82F6; } /* Asegurar color para Material Icons */
         .flow-step.completed .flow-icon { 
             background-color: #A7F3D0; 
             border-color: #10B981; 
         }
-        .flow-icon svg { 
-            width: 1.25rem; height: 1.25rem; 
+         .flow-step.completed .flow-icon svg, .flow-step.completed .flow-icon .material-icons { color: #059669; } /* Asegurar color para Material Icons */
+
+        .flow-icon svg, .flow-icon .material-icons { /* Aplicar a SVG y Material Icons */
+            width: 1.5rem; /* Ajustar tamaño para Material Icons */
+            height: 1.5rem; /* Ajustar tamaño para Material Icons */
             color: #4B5563; 
+            font-size: 1.5rem; /* Para Material Icons */
         }
         .flow-line {
             width: 3rem; height: 2px; background-color: #D1D5DB; 
@@ -245,6 +248,177 @@
         .footer-bg { background-color: #1F2937;  }
         .footer-text { color: #D1D5DB;  }
 
+        /* --- ESTILOS PARA EL CHAT POPUP --- */
+        #chat-popup-button {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            background-color: #1a73e8; /* Azul Google */
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 28px; /* Tamaño del icono Material Icons */
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            cursor: pointer;
+            z-index: 999;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+        #chat-popup-button:hover {
+            background-color: #1669c9;
+            transform: scale(1.1);
+        }
+
+        #chat-popup-container {
+            position: fixed;
+            bottom: 100px; /* Espacio desde el botón flotante */
+            right: 25px;
+            width: 100%;
+            max-width: 400px; /* Ancho del chat popup */
+            height: 70vh; /* Altura del chat popup */
+            max-height: 550px;
+            background-color: #ffffff;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+            border-radius: 18px; /* Bordes redondeados para el popup */
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            z-index: 998;
+            visibility: hidden; /* Oculto por defecto */
+            opacity: 0;
+            transform: translateY(20px) scale(0.95);
+            transition: visibility 0.3s, opacity 0.3s, transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+        #chat-popup-container.open {
+            visibility: visible;
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+
+        #chat-popup-container .chat-header { 
+            background-color: #1a73e8;
+            color: white;
+            padding: 15px; 
+            text-align: center;
+            font-size: 1.1em;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-top-left-radius: 18px; 
+            border-top-right-radius: 18px;
+            position: relative; /* Para posicionar el botón de cerrar */
+        }
+        #chat-popup-container .chat-header-icon {
+            margin-right: 8px;
+            width: 24px; 
+            height: 24px;
+            fill: white; 
+        }
+         #chat-popup-container .close-chat-button {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 28px; 
+            position: absolute;
+            top: 50%; 
+            transform: translateY(-50%); 
+            right: 15px;
+            cursor: pointer;
+            padding: 0 5px; 
+            line-height: 1;
+        }
+         #chat-popup-container .close-chat-button:hover {
+            opacity: 0.8;
+         }
+
+        #chat-popup-container .chat-messages { 
+            flex-grow: 1;
+            padding: 15px;
+            overflow-y: auto;
+            background-color: #ffffff;
+        }
+        #chat-popup-container .message {
+            margin-bottom: 12px;
+            padding: 8px 12px;
+            border-radius: 16px;
+            line-height: 1.4;
+            max-width: 85%;
+            word-wrap: break-word;
+        }
+        #chat-popup-container .user-message {
+            background-color: #d1e3ff;
+            color: #001d35;
+            margin-left: auto;
+            border-bottom-right-radius: 5px;
+        }
+        #chat-popup-container .bot-message {
+            background-color: #e8eaed;
+            color: #202124;
+            margin-right: auto;
+            border-bottom-left-radius: 5px;
+        }
+        #chat-popup-container .bot-message.error {
+            background-color: #fdd;
+            color: #700;
+        }
+
+        #chat-popup-container .chat-input-area { 
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            background-color: #f0f2f5;
+            border-top: 1px solid #dadce0;
+        }
+        #chat-popup-container .chat-input-area input[type="text"] {
+            flex-grow: 1;
+            padding: 10px 15px;
+            border: 1px solid #dadce0;
+            border-radius: 20px;
+            font-size: 0.95em;
+            margin-right: 8px;
+            outline: none;
+        }
+        #chat-popup-container .chat-input-area input[type="text"]:focus {
+            border-color: #1a73e8;
+            box-shadow: 0 0 0 2px rgba(26, 115, 232, 0.2);
+        }
+        #chat-popup-container .chat-input-area button {
+            background-color: #1a73e8;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px; 
+            height: 40px;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: background-color 0.2s ease;
+        }
+         #chat-popup-container .chat-input-area button svg {
+            width: 20px; 
+            height: 20px;
+        }
+        #chat-popup-container .chat-input-area button:hover {
+            background-color: #1669c9;
+        }
+
+        #chat-popup-container .chat-messages::-webkit-scrollbar { width: 7px; }
+        #chat-popup-container .chat-messages::-webkit-scrollbar-track { background: #f0f2f5; border-radius: 10px; }
+        #chat-popup-container .chat-messages::-webkit-scrollbar-thumb { background: #c1c1c1; border-radius: 10px; }
+        #chat-popup-container .chat-messages::-webkit-scrollbar-thumb:hover { background: #a1a1a1; }
+        /* --- FIN ESTILOS PARA EL CHAT POPUP --- */
+
+        /* Estilo para los iconos de Material Icons en las tarjetas de servicio */
+        .service-card .material-icons {
+            font-size: 4rem; /* 64px, equivalente a h-16 w-16 de Tailwind */
+            color: #3B82F6; /* text-blue-500 */
+        }
+
     </style>
 </head>
 <body class="bg-gray-100"> 
@@ -253,7 +427,6 @@
         <div class="container mx-auto text-center px-6">
             <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">Transforme su negocio con SGM Automatización</h1>
             <p class="text-lg md:text-xl text-gray-300 mb-8 max-w-2xl mx-auto">Soluciones a medida con IA para optimizar procesos, mejorar la atención al cliente y potenciar el crecimiento.</p>
-            
             <div class="hero-svg-container" role="img" aria-label="Ilustración abstracta de automatización e inteligencia artificial">
                 <svg viewBox="0 0 200 100" xmlns="http://www.w3.org/2000/svg">
                     <defs>
@@ -285,10 +458,7 @@
                     <circle cx="85" cy="50" r="3" fill="rgba(96, 165, 250, 0.2)"/>
                 </svg>
             </div>
-
-            <a href="#demo" class="hero-cta-button"> 
-                Ver demostración
-            </a>
+            <a href="#demo" class="hero-cta-button">Ver demostración</a>
         </div>
     </header>
 
@@ -297,17 +467,23 @@
             <h2 class="section-title text-3xl md:text-4xl font-semibold text-center text-gray-800">Nuestros servicios de automatización</h2>
             <div class="grid md:grid-cols-3 gap-8 mt-12">
                  <div class="service-card text-center">
-                    <div class="flex justify-center mb-6"><svg class="h-16 w-16 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M8.625 12a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375M21 12c0 4.556-3.86 8.25-8.625 8.25S3.75 16.556 3.75 12s3.86-8.25 8.625-8.25S21 7.444 21 12z" /></svg></div>
+                    <div class="flex justify-center mb-6">
+                        <span class="material-icons">chat</span>
+                    </div>
                     <h3 class="text-2xl font-semibold mb-3 text-gray-700">Chatbots inteligentes</h3>
                     <p class="text-gray-600 leading-relaxed">Desarrollamos chatbots que gestionan consultas, resuelven dudas y captan clientes potenciales 24/7, mejorando la interacción y liberando a su equipo.</p>
                 </div>
                 <div class="service-card text-center">
-                    <div class="flex justify-center mb-6"><svg class="h-16 w-16 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5m-9-3.75h.008v.008H12v-.008zM12 15h.008v.008H12V15zm0 2.25h.008v.008H12v-.008zM9.75 15h.008v.008H9.75V15zm0 2.25h.008v.008H9.75v-.008zM7.5 15h.008v.008H7.5V15zm0 2.25h.008v.008H7.5v-.008zm6.75-4.5h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V15zm0 2.25h.008v.008h-.008v-.008zm2.25-4.5h.008v.008H16.5v-.008zm0 2.25h.008v.008H16.5V15z" /></svg></div>
+                    <div class="flex justify-center mb-6">
+                        <span class="material-icons">event_available</span>
+                    </div>
                     <h3 class="text-2xl font-semibold mb-3 text-gray-700">Gestión de citas online</h3>
                     <p class="text-gray-600 leading-relaxed">Sistemas para que sus clientes puedan pedir, modificar o cancelar citas de forma automática, integrados con su calendario y con recordatorios para minimizar ausencias.</p>
                 </div>
                 <div class="service-card text-center">
-                     <div class="flex justify-center mb-6"><svg class="h-16 w-16 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L1.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.25 12L17.437 15.904 15.75 18.75l.813-2.846a4.5 4.5 0 003.09-3.09L22.75 12l-2.846-.813a4.5 4.5 0 00-3.09-3.09L18.25 5.25l-.813 2.846a4.5 4.5 0 00-3.09 3.09L11.25 12l2.846.813a4.5 4.5 0 003.09 3.09z" /></svg></div>
+                     <div class="flex justify-center mb-6">
+                        <span class="material-icons">settings_ethernet</span>
+                     </div>
                     <h3 class="text-2xl font-semibold mb-3 text-gray-700">Procesos optimizados</h3>
                     <p class="text-gray-600 leading-relaxed">Creamos flujos de trabajo a medida con n8n y otras herramientas para conectar sus apps, automatizar tareas repetitivas y aumentar la eficiencia de su negocio.</p>
                 </div>
@@ -319,7 +495,6 @@
         <div class="container mx-auto px-6">
             <h2 class="section-title text-3xl md:text-4xl font-semibold text-center text-gray-800">Demostración automática</h2>
             <p class="text-center text-gray-600 mb-6 text-lg max-w-xl mx-auto">Seleccione un tipo de negocio para ver una simulación de nuestro chatbot.</p>
-            
             <div class="max-w-xl mx-auto bg-white p-6 sm:p-8 rounded-xl shadow-xl">
                 <div class="scenario-selector text-center mb-6">
                     <p class="font-semibold mb-3 text-gray-700 text-lg">Elija el tipo de negocio:</p>
@@ -338,18 +513,14 @@
                         </button>
                     </div>
                 </div>
-                                                
                 <div class="flex justify-center my-8">
                     <button id="playDemoButton" class="play-demo-button" disabled> 
                         <span class="material-icons">play_circle_filled</span> 
                         <span>Iniciar demo</span>
                     </button>
                 </div>
-
-                <div id="chatArea" class="h-80 border border-gray-200 rounded-lg p-4 overflow-y-auto bg-gray-50 flex flex-col space-y-3 mb-6 shadow-inner">
-                    </div>
-                <div id="demoFlowVisualization" class="demo-flow">
-                    </div>
+                <div id="chatArea" class="h-80 border border-gray-200 rounded-lg p-4 overflow-y-auto bg-gray-50 flex flex-col space-y-3 mb-6 shadow-inner"></div>
+                <div id="demoFlowVisualization" class="demo-flow"></div>
             </div>
         </div>
     </section>
@@ -385,126 +556,69 @@
             <p class="text-sm">Impulsando la eficiencia de negocios en España con n8n e inteligencia artificial.</p>
         </div>
     </footer>
+    <div id="chat-popup-button" title="Abrir chat de ayuda">
+        <span class="material-icons">smart_toy</span> </div>
+
+    <div id="chat-popup-container">
+        <div class="chat-header">
+            <svg class="chat-header-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H6l-2 2V4h16v12z"/>
+                <path d="M0 0h24v24H0z" fill="none"/>
+            </svg>
+            Asistente Virtual
+            <button class="close-chat-button" onclick="toggleChatPopup()" title="Cerrar chat">&times;</button>
+        </div>
+        <div class="chat-messages" id="popupChatMessages">
+            <div class="message bot-message">¡Hola! Soy tu asistente. Pregúntame sobre horario, ubicación o servicios.</div>
+        </div>
+        <div class="chat-input-area">
+            <input type="text" id="popupUserInput" placeholder="Escribe tu mensaje...">
+            <button id="popupSendButton" onclick="sendPopupMessage()" title="Enviar mensaje">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+            </button>
+        </div>
+    </div>
 
     <script>
+        // Script original de tu index.html (para la demo y el formulario de contacto)
         const selectDentistButton = document.getElementById('selectDentist');
         const selectRestaurantButton = document.getElementById('selectRestaurant');
         const selectVeterinarianButton = document.getElementById('selectVeterinarian');
         const playDemoButton = document.getElementById('playDemoButton'); 
-        const chatArea = document.getElementById('chatArea');
+        const chatArea = document.getElementById('chatArea'); 
         const demoFlowVisualization = document.getElementById('demoFlowVisualization');
         const contactForm = document.getElementById('contactForm');
         const formSubmissionMessage = document.getElementById('formSubmissionMessage');
         
-        document.getElementById('currentYear').textContent = new Date().getFullYear();
+        if (document.getElementById('currentYear')) {
+            document.getElementById('currentYear').textContent = new Date().getFullYear();
+        }
 
         let selectedSubScenarioKey = null; 
         let currentDemoClientName = "Cliente"; 
         let currentOwnerName = "Dueño/a";
         let currentPetName = "Mascota";
-
         let currentVetSequenceIndex = -1; 
         let currentDentalSequenceIndex = -1;
         let demoLoopTimeout = null; 
-
         const randomClientNames = ["Ana", "Carlos", "Laura", "David", "Sofía", "Javier", "Elena", "Miguel", "Lucía", "Pablo"];
-        // const femaleOwnerNames = ["Ana", "Laura", "Sofía", "Elena", "Lucía", "Marta", "Sara", "Isabel", "Carmen"]; // No se usará directamente si fijamos Míriam y David
         const randomPetNames = ["Max", "Luna", "Coco", "Bella", "Rocky", "Lola", "Toby", "Nala", "Simba", "Kira"];
-
 
         const scenariosData = {
             'dentist_consulta_general': { 
                 description: "Simulación de consulta dental general (se mostrará un flujo al azar).",
-                flow: [ 
-                    { name: "Contacto inicial", icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M10 2a8 8 0 100 16 8 8 0 000-16zm0 14a6 6 0 110-12 6 6 0 010 12zm-1-8a1 1 0 011-1h2a1 1 0 110 2h-2a1 1 0 01-1-1zm0 4a1 1 0 011-1h2a1 1 0 110 2h-2a1 1 0 01-1-1z"/></svg>' },
-                    { name: "Identificar servicio", icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-13a1 1 0 10-2 0v.268a6.964 6.964 0 000 1.464V9a1 1 0 102 0V6.732a6.964 6.964 0 000-1.464V5zm-1 6a1 1 0 100 2h.01a1 1 0 100-2H10z" clip-rule="evenodd" /></svg>' },
-                    { name: "Procesar solicitud", icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" /></svg>' },
-                    { name: "Resolución", icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>' }
-                ],
-                sequences: [
-                    [ // Pedir cita completa
-                        { type: 'user', text: 'Buenas tardes, me gustaría pedir cita para una revisión la semana que viene, por favor.', step: 1 },
-                        { type: 'bot', text: '¡Buenas tardes! Será un placer ayudarle. ¿A nombre de quién sería la reserva?', step: 1 },
-                        { type: 'user', text: 'A nombre de {CLIENT_NAME}.', step: 1, dynamicName: true},
-                        { type: 'bot', text: 'Gracias, {CLIENT_NAME}. Permítame un momento para consultar la disponibilidad...', step: 2, dynamicName: true},
-                        { type: 'bot', text: 'Tenemos hueco el martes a las 11:00 o el jueves a las 16:30. ¿Cuál de estas opciones le vendría bien?', step: 2 },
-                        { type: 'user', text: 'El martes a las 11:00 me parece perfecto.', step: 3 }, 
-                        { type: 'bot', text: 'Estupendo, {CLIENT_NAME}. Su cita para revisión ha sido confirmada para el martes a las 11:00.', step: 4, dynamicName: true }, 
-                        { type: 'bot', text: 'Anotando la cita en su calendario...', step: 4 },
-                        { type: 'bot', text: 'Le recordamos su cita para la revisión mañana martes a las 11:00. ¡Le esperamos!', step: 4, delay: 1500 }, 
-                        { type: 'bot', text: '¡Hola de nuevo, {CLIENT_NAME}! Esperamos que su visita del martes fuera satisfactoria. ¿Qué tal fue todo?', step: 4, delay: 1500, dynamicName: true }, 
-                        { type: 'user', text: '¡Todo fue genial en la cita, muchas gracias!', step: 4 }, 
-                        { type: 'bot', text: 'Nos alegra mucho saber que su experiencia fue positiva. Si tiene un momento, ¿podría dejarnos una valoración en Google? Su opinión nos ayuda a mejorar. [Enlace a Google Reviews]', step: 4 }
-                    ],
-                    [ // Consultar precio limpieza
-                        { type: 'user', text: 'Hola, ¿me podría decir el precio de una limpieza dental, por favor?', step: 1 },
-                        { type: 'bot', text: '¡Hola! Por supuesto. El precio de la limpieza dental es de 50€. Incluye revisión y pulido.', step: 2 },
-                        { type: 'bot', text: '¿Desea que le ayude a reservar una cita para su limpieza?', step: 3 },
-                        { type: 'user', text: 'De momento solo quería saber el precio, gracias.', step: 3 },
-                        { type: 'bot', text: 'Entendido. Si cambia de opinión o tiene más preguntas, no dude en consultarnos. ¡Que tenga un buen día!', step: 4 }
-                    ]
-                ]
+                flow: [ { name: "Contacto inicial", icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M10 2a8 8 0 100 16 8 8 0 000-16zm0 14a6 6 0 110-12 6 6 0 010 12zm-1-8a1 1 0 011-1h2a1 1 0 110 2h-2a1 1 0 01-1-1zm0 4a1 1 0 011-1h2a1 1 0 110 2h-2a1 1 0 01-1-1z"/></svg>' },{ name: "Identificar servicio", icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-13a1 1 0 10-2 0v.268a6.964 6.964 0 000 1.464V9a1 1 0 102 0V6.732a6.964 6.964 0 000-1.464V5zm-1 6a1 1 0 100 2h.01a1 1 0 100-2H10z" clip-rule="evenodd" /></svg>' },{ name: "Procesar solicitud", icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" /></svg>' },{ name: "Resolución", icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>' }],
+                sequences: [[{ type: 'user', text: 'Buenas tardes, me gustaría pedir cita para una revisión la semana que viene, por favor.', step: 1 },{ type: 'bot', text: '¡Buenas tardes! Será un placer ayudarle. ¿A nombre de quién sería la reserva?', step: 1 },{ type: 'user', text: 'A nombre de {CLIENT_NAME}.', step: 1, dynamicName: true},{ type: 'bot', text: 'Gracias, {CLIENT_NAME}. Permítame un momento para consultar la disponibilidad...', step: 2, dynamicName: true},{ type: 'bot', text: 'Tenemos hueco el martes a las 11:00 o el jueves a las 16:30. ¿Cuál de estas opciones le vendría bien?', step: 2 },{ type: 'user', text: 'El martes a las 11:00 me parece perfecto.', step: 3 },{ type: 'bot', text: 'Estupendo, {CLIENT_NAME}. Su cita para revisión ha sido confirmada para el martes a las 11:00.', step: 4, dynamicName: true },{ type: 'bot', text: 'Anotando la cita en su calendario...', step: 4 },{ type: 'bot', text: 'Le recordamos su cita para la revisión mañana martes a las 11:00. ¡Le esperamos!', step: 4, delay: 1500 },{ type: 'bot', text: '¡Hola de nuevo, {CLIENT_NAME}! Esperamos que su visita del martes fuera satisfactoria. ¿Qué tal fue todo?', step: 4, delay: 1500, dynamicName: true },{ type: 'user', text: '¡Todo fue genial en la cita, muchas gracias!', step: 4 },{ type: 'bot', text: 'Nos alegra mucho saber que su experiencia fue positiva. Si tiene un momento, ¿podría dejarnos una valoración en Google? Su opinión nos ayuda a mejorar. [Enlace a Google Reviews]', step: 4 }],[{ type: 'user', text: 'Hola, ¿me podría decir el precio de una limpieza dental, por favor?', step: 1 },{ type: 'bot', text: '¡Hola! Por supuesto. El precio de la limpieza dental es de 50€. Incluye revisión y pulido.', step: 2 },{ type: 'bot', text: '¿Desea que le ayude a reservar una cita para su limpieza?', step: 3 },{ type: 'user', text: 'De momento solo quería saber el precio, gracias.', step: 3 },{ type: 'bot', text: 'Entendido. Si cambia de opinión o tiene más preguntas, no dude en consultarnos. ¡Que tenga un buen día!', step: 4 }]]
             },
             'restaurant_reserva': { 
                 description: "Simulación de reserva de mesa en restaurante.",
-                flow: [
-                    { name: "Solicitud reserva", icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M10 2a8 8 0 100 16 8 8 0 000-16zm0 14a6 6 0 110-12 6 6 0 010 12zm-1-8a1 1 0 011-1h2a1 1 0 110 2h-2a1 1 0 01-1-1zm0 4a1 1 0 011-1h2a1 1 0 110 2h-2a1 1 0 01-1-1z"/></svg>' },
-                    { name: "Nº personas", icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z"></path></svg>' },
-                    { name: "Fecha y hora", icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd" /></svg>' },
-                    { name: "Confirmación", icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>' }
-                ],
-                messages: [ 
-                    { type: 'user', text: 'Buenas, me gustaría reservar una mesa.', step: 1 },
-                    { type: 'bot', text: '¡Hola! Estupendo. ¿Para cuántas personas sería la reserva?', step: 2 },
-                    { type: 'user', text: 'Seríamos 4 personas.', step: 2 },
-                    { type: 'bot', text: 'Perfecto. ¿Para qué día y hora desearía la reserva?', step: 3 },
-                    { type: 'user', text: 'Para este sábado a las 21:00, si es posible.', step: 3 },
-                    { type: 'bot', text: 'Un momento, voy a comprobar...', step: 4, delay: 1200 },
-                    { type: 'bot', text: 'Sí, tenemos disponibilidad. Mesa para 4 personas el sábado a las 21:00. ¿A nombre de quién hago la reserva?', step: 4 },
-                    { type: 'user', text: 'A nombre de {CLIENT_NAME}, por favor.', step: 4, dynamicName: true },
-                    { type: 'bot', text: '¡Muy bien, {CLIENT_NAME}! Su reserva para 4 personas el sábado a las 21:00 está confirmada. ¡Les esperamos!', step: 4, dynamicName: true }
-                ]
+                flow: [{ name: "Solicitud reserva", icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M10 2a8 8 0 100 16 8 8 0 000-16zm0 14a6 6 0 110-12 6 6 0 010 12zm-1-8a1 1 0 011-1h2a1 1 0 110 2h-2a1 1 0 01-1-1zm0 4a1 1 0 011-1h2a1 1 0 110 2h-2a1 1 0 01-1-1z"/></svg>' },{ name: "Nº personas", icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z"></path></svg>' },{ name: "Fecha y hora", icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd" /></svg>' },{ name: "Confirmación", icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>' }],
+                messages: [ { type: 'user', text: 'Buenas, me gustaría reservar una mesa.', step: 1 },{ type: 'bot', text: '¡Hola! Estupendo. ¿Para cuántas personas sería la reserva?', step: 2 },{ type: 'user', text: 'Seríamos 4 personas.', step: 2 },{ type: 'bot', text: 'Perfecto. ¿Para qué día y hora desearía la reserva?', step: 3 },{ type: 'user', text: 'Para este sábado a las 21:00, si es posible.', step: 3 },{ type: 'bot', text: 'Un momento, voy a comprobar...', step: 4, delay: 1200 },{ type: 'bot', text: 'Sí, tenemos disponibilidad. Mesa para 4 personas el sábado a las 21:00. ¿A nombre de quién hago la reserva?', step: 4 },{ type: 'user', text: 'A nombre de {CLIENT_NAME}, por favor.', step: 4, dynamicName: true },{ type: 'bot', text: '¡Muy bien, {CLIENT_NAME}! Su reserva para 4 personas el sábado a las 21:00 está confirmada. ¡Les esperamos!', step: 4, dynamicName: true }]
             },
             'veterinarian_consulta_general': { 
                 description: "Simulación de consulta general veterinaria (se mostrará un flujo al azar).",
-                flow: [ 
-                    { name: "Contacto inicial", icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M10 2a8 8 0 100 16 8 8 0 000-16zm0 14a6 6 0 110-12 6 6 0 010 12zm-1-8a1 1 0 011-1h2a1 1 0 110 2h-2a1 1 0 01-1-1zm0 4a1 1 0 011-1h2a1 1 0 110 2h-2a1 1 0 01-1-1z"/></svg>' },
-                    { name: "Identificar necesidad", icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-13a1 1 0 10-2 0v.268a6.964 6.964 0 000 1.464V9a1 1 0 102 0V6.732a6.964 6.964 0 000-1.464V5zm-1 6a1 1 0 100 2h.01a1 1 0 100-2H10z" clip-rule="evenodd" /></svg>' },
-                    { name: "Triaje/Decisión", icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" /></svg>' }, 
-                    { name: "Resolución", icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>' }
-                ],
-                sequences: [
-                    [ // Urgente
-                        { type: 'user', text: 'Hola, necesito una revisión para mi perro, por favor.', step: 1 },
-                        { type: 'bot', text: '¡Hola! Entendido. Para poder ayudarle mejor, ¿podría indicarme si se trata de una urgencia o es una revisión rutinaria?', step: 2 },
-                        { type: 'user', text: 'Es bastante urgente, mi perro no se encuentra bien.', step: 3 },
-                        { type: 'bot', text: 'Comprendo su preocupación. En caso de urgencia, lo más importante es que su perro reciba atención lo antes posible. Le recomendamos que acuda directamente a nuestra clínica. Estamos en Calle Falsa 123.', step: 4 },
-                        { type: 'user', text: 'De acuerdo, iremos para allá. Gracias.', step: 4 },
-                        { type: 'bot', text: 'Perfecto. Les esperamos. Si necesita indicaciones para llegar, no dude en preguntar. Esperamos que todo vaya bien.', step: 4 }
-                    ],
-                    [ // Rutinaria Gato
-                        { type: 'user', text: 'Hola, me gustaría pedir cita para una revisión para mi gato.', step: 1, petType: 'gato' },
-                        { type: 'bot', text: '¡Hola! Claro que sí. ¿Se trata de una urgencia o es una revisión rutinaria para su gato?', step: 2 },
-                        { type: 'user', text: 'Es solo una revisión rutinaria.', step: 3 },
-                        { type: 'bot', text: 'De acuerdo. Para una revisión rutinaria, ¿podría indicarme su nombre y el nombre de su gato, por favor?', step: 3, requiresPetOwnerNames: true },
-                        { type: 'user', text: 'Claro, soy {OWNER_NAME} y mi gato se llama {PET_NAME}.', step: 3, dynamicOwnerName: true, dynamicPetName: true },
-                        { type: 'bot', text: 'Perfecto, {OWNER_NAME}. Para la revisión de {PET_NAME}, tenemos disponibilidad el próximo miércoles a las 10:00. ¿Le vendría bien esa hora?', step: 4, dynamicOwnerName: true, dynamicPetName: true },
-                        { type: 'user', text: 'Sí, el miércoles a las 10:00 está perfecto.', step: 4 },
-                        { type: 'bot', text: 'Genial. Hemos confirmado la cita para la revisión de {PET_NAME} para el miércoles a las 10:00. ¿Hay algo más en lo que pueda ayudarle?', step: 4, dynamicPetName: true },
-                        { type: 'user', text: 'No, eso es todo. ¡Muchas gracias!', step: 4 },
-                        { type: 'bot', text: 'A usted. ¡Que tenga un buen día!', step: 4 }
-                    ],
-                    [ // Peluquería
-                        { type: 'user', text: '¡Hola! Quería informarme sobre el servicio de peluquería para mi perro.', step: 1 },
-                        { type: 'bot', text: '¡Hola! Claro, ofrecemos servicio completo de peluquería canina. ¿Le gustaría reservar una cita?', step: 2 }, 
-                        { type: 'user', text: 'Sí, por favor.', step: 3 }, 
-                        { type: 'bot', text: 'Perfecto. Para la peluquería, ¿podría decirme su nombre y el de su perro?', step: 3, requiresPetOwnerNames: true },
-                        { type: 'user', text: 'Soy {OWNER_NAME} y mi perro es {PET_NAME}.', step: 3, dynamicOwnerName: true, dynamicPetName: true },
-                        { type: 'bot', text: 'Gracias, {OWNER_NAME}. Tenemos disponibilidad para {PET_NAME} el próximo viernes a las 12:00. ¿Le vendría bien?', step: 4, dynamicOwnerName: true, dynamicPetName: true },
-                        { type: 'user', text: 'El viernes a las 12:00 me va genial.', step: 4 },
-                        { type: 'bot', text: 'Estupendo. Hemos confirmado su cita para peluquería canina para {PET_NAME} el viernes a las 12:00. ¡Le esperamos!', step: 4, dynamicPetName: true }
-                    ]
-                ]
+                flow: [ { name: "Contacto inicial", icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M10 2a8 8 0 100 16 8 8 0 000-16zm0 14a6 6 0 110-12 6 6 0 010 12zm-1-8a1 1 0 011-1h2a1 1 0 110 2h-2a1 1 0 01-1-1zm0 4a1 1 0 011-1h2a1 1 0 110 2h-2a1 1 0 01-1-1z"/></svg>' },{ name: "Identificar necesidad", icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-13a1 1 0 10-2 0v.268a6.964 6.964 0 000 1.464V9a1 1 0 102 0V6.732a6.964 6.964 0 000-1.464V5zm-1 6a1 1 0 100 2h.01a1 1 0 100-2H10z" clip-rule="evenodd" /></svg>' },{ name: "Triaje/Decisión", icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" /></svg>' },{ name: "Resolución", icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>' }],
+                sequences: [[{ type: 'user', text: 'Hola, necesito una revisión para mi perro, por favor.', step: 1 },{ type: 'bot', text: '¡Hola! Entendido. Para poder ayudarle mejor, ¿podría indicarme si se trata de una urgencia o es una revisión rutinaria?', step: 2 },{ type: 'user', text: 'Es bastante urgente, mi perro no se encuentra bien.', step: 3 },{ type: 'bot', text: 'Comprendo su preocupación. En caso de urgencia, lo más importante es que su perro reciba atención lo antes posible. Le recomendamos que acuda directamente a nuestra clínica. Estamos en Calle Falsa 123.', step: 4 },{ type: 'user', text: 'De acuerdo, iremos para allá. Gracias.', step: 4 },{ type: 'bot', text: 'Perfecto. Les esperamos. Si necesita indicaciones para llegar, no dude en preguntar. Esperamos que todo vaya bien.', step: 4 }],[{ type: 'user', text: 'Hola, me gustaría pedir cita para una revisión para mi gato.', step: 1, petType: 'gato' },{ type: 'bot', text: '¡Hola! Claro que sí. ¿Se trata de una urgencia o es una revisión rutinaria para su gato?', step: 2 },{ type: 'user', text: 'Es solo una revisión rutinaria.', step: 3 },{ type: 'bot', text: 'De acuerdo. Para una revisión rutinaria, ¿podría indicarme su nombre y el nombre de su gato, por favor?', step: 3, requiresPetOwnerNames: true },{ type: 'user', text: 'Claro, soy {OWNER_NAME} y mi gato se llama {PET_NAME}.', step: 3, dynamicOwnerName: true, dynamicPetName: true },{ type: 'bot', text: 'Perfecto, {OWNER_NAME}. Para la revisión de {PET_NAME}, tenemos disponibilidad el próximo miércoles a las 10:00. ¿Le vendría bien esa hora?', step: 4, dynamicOwnerName: true, dynamicPetName: true },{ type: 'user', text: 'Sí, el miércoles a las 10:00 está perfecto.', step: 4 },{ type: 'bot', text: 'Genial. Hemos confirmado la cita para la revisión de {PET_NAME} para el miércoles a las 10:00. ¿Hay algo más en lo que pueda ayudarle?', step: 4, dynamicPetName: true },{ type: 'user', text: 'No, eso es todo. ¡Muchas gracias!', step: 4 },{ type: 'bot', text: 'A usted. ¡Que tenga un buen día!', step: 4 }],[{ type: 'user', text: '¡Hola! Quería informarme sobre el servicio de peluquería para mi perro.', step: 1 },{ type: 'bot', text: '¡Hola! Claro, ofrecemos servicio completo de peluquería canina. ¿Le gustaría reservar una cita?', step: 2 },{ type: 'user', text: 'Sí, por favor.', step: 3 },{ type: 'bot', text: 'Perfecto. Para la peluquería, ¿podría decirme su nombre y el de su perro?', step: 3, requiresPetOwnerNames: true },{ type: 'user', text: 'Soy {OWNER_NAME} y mi perro es {PET_NAME}.', step: 3, dynamicOwnerName: true, dynamicPetName: true },{ type: 'bot', text: 'Gracias, {OWNER_NAME}. Tenemos disponibilidad para {PET_NAME} el próximo viernes a las 12:00. ¿Le vendría bien?', step: 4, dynamicOwnerName: true, dynamicPetName: true },{ type: 'user', text: 'El viernes a las 12:00 me va genial.', step: 4 },{ type: 'bot', text: 'Estupendo. Hemos confirmado su cita para peluquería canina para {PET_NAME} el viernes a las 12:00. ¡Le esperamos!', step: 4, dynamicPetName: true }]]
             }
         };
 
@@ -516,29 +630,19 @@
             if (selectedButton) selectedButton.classList.add('selected');
         }
 
-
         function initializeDemoSelection() {
-            const mainScenarioButtons = [
-                selectDentistButton, 
-                selectRestaurantButton, 
-                selectVeterinarianButton
-            ];
-
+            const mainScenarioButtons = [selectDentistButton, selectRestaurantButton, selectVeterinarianButton];
             mainScenarioButtons.forEach(button => {
+                if (!button) return; 
                 button.addEventListener('click', () => {
-                    if (demoLoopTimeout) {
-                        clearTimeout(demoLoopTimeout);
-                        demoLoopTimeout = null;
-                    }
+                    if (demoLoopTimeout) { clearTimeout(demoLoopTimeout); demoLoopTimeout = null; }
                     mainScenarioButtons.forEach(btn => btn.classList.remove('selected'));
                     button.classList.add('selected');
-
                     selectedSubScenarioKey = button.dataset.sub_scenario; 
-                    playDemoButton.disabled = false; 
-                    
+                    if(playDemoButton) playDemoButton.disabled = false; 
                     if (scenariosData[selectedSubScenarioKey]) {
                         generateFlowVisualization(scenariosData[selectedSubScenarioKey].flow);
-                        chatArea.innerHTML = `<p class="text-center text-gray-500 p-4">Pulse "Iniciar demo" para ver la simulación de: ${scenariosData[selectedSubScenarioKey].description}</p>`;
+                        if(chatArea) chatArea.innerHTML = `<p class="text-center text-gray-500 p-4">Pulse "Iniciar demo" para ver la simulación de: ${scenariosData[selectedSubScenarioKey].description}</p>`;
                         if (selectedSubScenarioKey === 'veterinarian_consulta_general') currentVetSequenceIndex = -1;
                         if (selectedSubScenarioKey === 'dentist_consulta_general') currentDentalSequenceIndex = -1;
                     }
@@ -547,42 +651,33 @@
         }
         
         function clearDemoInterface() { 
-            chatArea.innerHTML = '<p class="text-center text-gray-500 p-4">Seleccione un tipo de negocio para iniciar la demostración.</p>';
-            demoFlowVisualization.innerHTML = '';
+            if(chatArea) chatArea.innerHTML = '<p class="text-center text-gray-500 p-4">Seleccione un tipo de negocio para iniciar la demostración.</p>';
+            if(demoFlowVisualization) demoFlowVisualization.innerHTML = '';
             updateFlowActiveStep(0); 
-            playDemoButton.disabled = true; 
-            if (demoLoopTimeout) {
-                clearTimeout(demoLoopTimeout); 
-                demoLoopTimeout = null;
-            }
+            if(playDemoButton) playDemoButton.disabled = true; 
+            if (demoLoopTimeout) { clearTimeout(demoLoopTimeout); demoLoopTimeout = null; }
         }
         
-        function addMessageToChat(type, text) {
+        function addMessageToChatDemo(type, text) { 
             let processedText = text;
-            if (text.includes("{CLIENT_NAME}")) { 
-                processedText = processedText.replace(/{CLIENT_NAME}/g, currentDemoClientName);
-            }
-            if (text.includes("{OWNER_NAME}")) { 
-                processedText = processedText.replace(/{OWNER_NAME}/g, currentOwnerName);
-            }
-            if (text.includes("{PET_NAME}")) { 
-                processedText = processedText.replace(/{PET_NAME}/g, currentPetName);
-            }
+            if (text.includes("{CLIENT_NAME}")) { processedText = processedText.replace(/{CLIENT_NAME}/g, currentDemoClientName); }
+            if (text.includes("{OWNER_NAME}")) { processedText = processedText.replace(/{OWNER_NAME}/g, currentOwnerName); }
+            if (text.includes("{PET_NAME}")) { processedText = processedText.replace(/{PET_NAME}/g, currentPetName); }
             return new Promise(resolve => {
                 const bubble = document.createElement('div');
-                bubble.classList.add('chat-bubble', type);
+                bubble.classList.add('chat-bubble', type); 
                 bubble.textContent = processedText;
-                chatArea.appendChild(bubble);
+                if(chatArea) chatArea.appendChild(bubble); 
                 void bubble.offsetWidth; 
                 bubble.classList.add('show');
-                chatArea.scrollTop = chatArea.scrollHeight;
+                if(chatArea) chatArea.scrollTop = chatArea.scrollHeight;
                 setTimeout(resolve, 700); 
             });
         }
         
         function generateFlowVisualization(flowStepsData) {
+            if(!demoFlowVisualization || !flowStepsData || flowStepsData.length === 0) return;
             demoFlowVisualization.innerHTML = ''; 
-            if (!flowStepsData || flowStepsData.length === 0) return;
             flowStepsData.forEach((stepData, index) => {
                 const stepDiv = document.createElement('div');
                 stepDiv.classList.add('flow-step');
@@ -605,27 +700,22 @@
         }
 
         function updateFlowActiveStep(currentStep) {
+            if(!demoFlowVisualization) return;
             const flowStepElements = demoFlowVisualization.querySelectorAll('.flow-step');
             flowStepElements.forEach(stepEl => {
                 const stepNumber = parseInt(stepEl.dataset.step);
                 stepEl.classList.remove('active', 'completed');
-                if (stepNumber < currentStep) {
-                    stepEl.classList.add('completed');
-                } else if (stepNumber === currentStep) {
-                    stepEl.classList.add('active');
-                }
+                if (stepNumber < currentStep) { stepEl.classList.add('completed'); } 
+                else if (stepNumber === currentStep) { stepEl.classList.add('active'); }
             });
         }
 
         async function startDemo() { 
             if (!selectedSubScenarioKey || !scenariosData[selectedSubScenarioKey]) {
-                chatArea.innerHTML = '<p class="text-center text-red-500 p-4">Por favor, seleccione un escenario completo antes de iniciar la demo.</p>';
+                if(chatArea) chatArea.innerHTML = '<p class="text-center text-red-500 p-4">Por favor, seleccione un escenario completo antes de iniciar la demo.</p>';
                 return;
             }
-            if (demoLoopTimeout) { 
-                clearTimeout(demoLoopTimeout);
-                demoLoopTimeout = null;
-            }
+            if (demoLoopTimeout) { clearTimeout(demoLoopTimeout); demoLoopTimeout = null; }
 
             let currentScenarioMessages;
             const scenario = scenariosData[selectedSubScenarioKey];
@@ -636,85 +726,45 @@
                     currentVetSequenceIndex = (currentVetSequenceIndex + 1) % scenario.sequences.length; 
                     currentScenarioMessages = scenario.sequences[currentVetSequenceIndex];
                     isLastSequenceOfCurrentType = currentVetSequenceIndex === (scenario.sequences.length - 1);
-                    
-                    if (currentVetSequenceIndex === 0) { // Secuencia de Urgencia
-                        currentOwnerName = randomClientNames[Math.floor(Math.random() * randomClientNames.length)];
-                        currentPetName = randomPetNames[Math.floor(Math.random() * randomPetNames.length)];
-                    } else if (currentVetSequenceIndex === 1) { // Secuencia de revisión gato
-                        currentOwnerName = "Míriam"; 
-                        currentPetName = "Misi"; 
-                    } else if (currentVetSequenceIndex === 2) { // Secuencia de peluquería
-                        currentOwnerName = "David"; 
-                        currentPetName = randomPetNames[Math.floor(Math.random() * randomPetNames.length)];
-                    }
-
+                    if (currentVetSequenceIndex === 0) { currentOwnerName = randomClientNames[Math.floor(Math.random() * randomClientNames.length)]; currentPetName = randomPetNames[Math.floor(Math.random() * randomPetNames.length)];} 
+                    else if (currentVetSequenceIndex === 1) { currentOwnerName = "Míriam"; currentPetName = "Misi"; } 
+                    else if (currentVetSequenceIndex === 2) { currentOwnerName = "David"; currentPetName = randomPetNames[Math.floor(Math.random() * randomPetNames.length)];}
                 } else if (selectedSubScenarioKey === 'dentist_consulta_general') {
                     currentDentalSequenceIndex = (currentDentalSequenceIndex + 1) % scenario.sequences.length;
                     currentScenarioMessages = scenario.sequences[currentDentalSequenceIndex];
                     isLastSequenceOfCurrentType = currentDentalSequenceIndex === (scenario.sequences.length - 1);
-                    
-                    if (currentDentalSequenceIndex === 0) { 
-                         currentDemoClientName = randomClientNames[Math.floor(Math.random() * randomClientNames.length)];
-                    } else {
-                         currentDemoClientName = "Cliente"; 
-                    }
-                    currentOwnerName = currentDemoClientName; 
-                    currentPetName = ""; 
+                    if (currentDentalSequenceIndex === 0) { currentDemoClientName = randomClientNames[Math.floor(Math.random() * randomClientNames.length)];} 
+                    else { currentDemoClientName = "Cliente"; }
+                    currentOwnerName = currentDemoClientName; currentPetName = ""; 
                 }
             } else { 
-                currentScenarioMessages = scenario.messages; 
-                currentOwnerName = "Cliente"; 
-                currentPetName = ""; 
-                isLastSequenceOfCurrentType = true; 
+                currentScenarioMessages = scenario.messages; currentOwnerName = "Cliente"; currentPetName = ""; isLastSequenceOfCurrentType = true; 
             }
-            
-            if (selectedSubScenarioKey === 'restaurant_reserva') { 
-                currentDemoClientName = randomClientNames[Math.floor(Math.random() * randomClientNames.length)];
-            }
+            if (selectedSubScenarioKey === 'restaurant_reserva') { currentDemoClientName = randomClientNames[Math.floor(Math.random() * randomClientNames.length)]; }
 
-
-            playDemoButton.disabled = true;
-            // El texto del botón "Iniciar demo" no se cambia a "Procesando..."
-            
-            if (chatArea.querySelector('p.text-gray-500')) { 
-                 chatArea.innerHTML = '';
-            }
+            if(playDemoButton) playDemoButton.disabled = true;
+            if(chatArea && chatArea.querySelector('p.text-gray-500')) { chatArea.innerHTML = ''; }
             updateFlowActiveStep(0); 
-
             let currentFlowStepNumber = 0;
 
             for (let i = 0; i < currentScenarioMessages.length; i++) {
                 const message = currentScenarioMessages[i];
-                
-                if (message.step !== currentFlowStepNumber) {
-                    currentFlowStepNumber = message.step;
-                    updateFlowActiveStep(currentFlowStepNumber);
-                }
-                
+                if (message.step !== currentFlowStepNumber) { currentFlowStepNumber = message.step; updateFlowActiveStep(currentFlowStepNumber); }
                 const delay = message.delay || (i === 0 ? 300 : 1800); 
                 await new Promise(resolve => setTimeout(resolve, delay));
-                await addMessageToChat(message.type, message.text);
+                await addMessageToChatDemo(message.type, message.text); 
             }
-            
             updateFlowActiveStep(currentFlowStepNumber + 1); 
-
             const scenarioKeyThatJustPlayed = selectedSubScenarioKey;
             const originalButtonText = "Iniciar demo"; 
-
             if (scenario.sequences && scenario.sequences.length > 0 && !isLastSequenceOfCurrentType) {
                 demoLoopTimeout = setTimeout(() => {
-                    if (selectedSubScenarioKey === scenarioKeyThatJustPlayed && playDemoButton.disabled) { 
-                        startDemo(); 
-                    } else {
-                        if(playDemoButton.disabled){ 
-                           playDemoButton.disabled = false;
-                           playDemoButton.querySelector('span:last-child').textContent = originalButtonText;
-                        }
-                    }
+                    if (selectedSubScenarioKey === scenarioKeyThatJustPlayed && playDemoButton && playDemoButton.disabled) { startDemo(); } 
+                    else { if(playDemoButton && playDemoButton.disabled){ playDemoButton.disabled = false; if(playDemoButton.querySelector('span:last-child')) playDemoButton.querySelector('span:last-child').textContent = originalButtonText;}}
                 }, 3000); 
             } else { 
-                playDemoButton.disabled = false;
-                playDemoButton.querySelector('span:last-child').textContent = originalButtonText;
+                if(playDemoButton) playDemoButton.disabled = false;
+                if(playDemoButton && playDemoButton.querySelector('span:last-child')) playDemoButton.querySelector('span:last-child').textContent = originalButtonText;
                 if (isLastSequenceOfCurrentType) {
                     if (selectedSubScenarioKey === 'veterinarian_consulta_general') currentVetSequenceIndex = -1;
                     if (selectedSubScenarioKey === 'dentist_consulta_general') currentDentalSequenceIndex = -1;
@@ -725,16 +775,105 @@
         if (contactForm) {
             contactForm.addEventListener('submit', function(event) {
                 event.preventDefault(); 
-                formSubmissionMessage.textContent = '¡Gracias por su mensaje! (Esta es una demostración, su mensaje no ha sido enviado.)';
+                if(formSubmissionMessage) formSubmissionMessage.textContent = '¡Gracias por su mensaje! (Esta es una demostración, su mensaje no ha sido enviado.)';
                 contactForm.reset(); 
-                setTimeout(() => { formSubmissionMessage.textContent = ''; }, 5000); 
+                setTimeout(() => { if(formSubmissionMessage) formSubmissionMessage.textContent = ''; }, 5000); 
             });
         }
 
         initializeDemoSelection(); 
         clearDemoInterface(); 
-        playDemoButton.addEventListener('click', startDemo); 
+        if(playDemoButton) playDemoButton.addEventListener('click', startDemo); 
 
+        // --- SCRIPT PARA EL CHAT POPUP ---
+        const n8nWebhookUrl = 'http://localhost:5678/webhook/487e7c09-1588-43ca-a8e5-42cfce2b6f0e'; 
+        const chatPopupButton = document.getElementById('chat-popup-button');
+        const chatPopupContainer = document.getElementById('chat-popup-container');
+        const popupChatMessagesDiv = document.getElementById('popupChatMessages');
+        const popupUserInputField = document.getElementById('popupUserInput');
+        const popupSendButton = document.getElementById('popupSendButton');
+
+        function toggleChatPopup() {
+            if(chatPopupContainer) { 
+                chatPopupContainer.classList.toggle('open');
+                if (chatPopupContainer.classList.contains('open') && popupUserInputField) {
+                    popupUserInputField.focus(); 
+                }
+            }
+        }
+
+        if (chatPopupButton) {
+            chatPopupButton.addEventListener('click', toggleChatPopup);
+        }
+        
+        if (popupUserInputField) {
+            popupUserInputField.addEventListener('keypress', function(event) {
+                if (event.key === 'Enter') {
+                    event.preventDefault();
+                    sendPopupMessage();
+                }
+            });
+        }
+
+        function appendPopupMessage(text, sender, isError = false) {
+            if(!popupChatMessagesDiv) return; 
+            const messageDiv = document.createElement('div');
+            messageDiv.classList.add('message'); 
+            if (sender === 'user') {
+                messageDiv.classList.add('user-message');
+            } else {
+                messageDiv.classList.add('bot-message');
+                if (isError) {
+                    messageDiv.classList.add('error');
+                }
+            }
+            messageDiv.textContent = text;
+            popupChatMessagesDiv.appendChild(messageDiv);
+            popupChatMessagesDiv.scrollTop = popupChatMessagesDiv.scrollHeight;
+        }
+
+        async function sendPopupMessage() {
+            if(!popupUserInputField) return; 
+            const userText = popupUserInputField.value.trim();
+            if (userText === '') return;
+
+            appendPopupMessage(userText, 'user');
+            popupUserInputField.value = '';
+            if(popupSendButton) popupSendButton.disabled = true;
+
+            try {
+                const fullUrl = `${n8nWebhookUrl}?mensage=${encodeURIComponent(userText)}`;
+                const response = await fetch(fullUrl, {
+                    method: 'GET',
+                    headers: { 'Accept': 'application/json' }
+                });
+
+                if (!response.ok) {
+                    let errorDetail = `Código de error: ${response.status}`;
+                    try {
+                        const errorData = await response.json();
+                        errorDetail += ` - ${errorData.message || JSON.stringify(errorData)}`;
+                    } catch (e) { errorDetail += ` - ${await response.text()}`; }
+                    console.error('Error en la respuesta de n8n (popup):', errorDetail);
+                    appendPopupMessage(`Lo siento, hubo un problema con el servidor. ${errorDetail}`, 'bot', true);
+                    return;
+                }
+
+                const data = await response.json();
+                if (data && data.responseMessage) {
+                    appendPopupMessage(data.responseMessage, 'bot');
+                } else {
+                    console.warn('Respuesta de n8n (popup) no tiene la propiedad responseMessage:', data);
+                    appendPopupMessage('No he recibido una respuesta con el formato esperado.', 'bot', true);
+                }
+            } catch (error) {
+                console.error('Error de red o al enviar mensaje (popup):', error);
+                appendPopupMessage('No pude conectar con el asistente. Revisa tu conexión o la configuración de n8n (CORS).', 'bot', true);
+            } finally {
+                if(popupSendButton) popupSendButton.disabled = false;
+                if(popupUserInputField) popupUserInputField.focus();
+            }
+        }
     </script>
 
 </body>
