@@ -212,18 +212,18 @@
             border-color: #3B82F6; 
             transform: scale(1.1); 
         }
-        .flow-step.active .flow-icon svg, .flow-step.active .flow-icon .material-icons { color: #3B82F6; } /* Asegurar color para Material Icons */
+        .flow-step.active .flow-icon svg, .flow-step.active .flow-icon .material-icons { color: #3B82F6; } 
         .flow-step.completed .flow-icon { 
             background-color: #A7F3D0; 
             border-color: #10B981; 
         }
-         .flow-step.completed .flow-icon svg, .flow-step.completed .flow-icon .material-icons { color: #059669; } /* Asegurar color para Material Icons */
+         .flow-step.completed .flow-icon svg, .flow-step.completed .flow-icon .material-icons { color: #059669; } 
 
-        .flow-icon svg, .flow-icon .material-icons { /* Aplicar a SVG y Material Icons */
-            width: 1.5rem; /* Ajustar tamaño para Material Icons */
-            height: 1.5rem; /* Ajustar tamaño para Material Icons */
+        .flow-icon svg, .flow-icon .material-icons { 
+            width: 1.5rem; 
+            height: 1.5rem; 
             color: #4B5563; 
-            font-size: 1.5rem; /* Para Material Icons */
+            font-size: 1.5rem; 
         }
         .flow-line {
             width: 3rem; height: 2px; background-color: #D1D5DB; 
@@ -253,7 +253,7 @@
             position: fixed;
             bottom: 25px;
             right: 25px;
-            background-color: #1a73e8; /* Azul Google */
+            background-color: #1a73e8; 
             color: white;
             width: 60px;
             height: 60px;
@@ -261,7 +261,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 28px; /* Tamaño del icono Material Icons */
+            font-size: 28px; 
             box-shadow: 0 4px 12px rgba(0,0,0,0.2);
             cursor: pointer;
             z-index: 999;
@@ -274,20 +274,20 @@
 
         #chat-popup-container {
             position: fixed;
-            bottom: 100px; /* Espacio desde el botón flotante */
+            bottom: 100px; 
             right: 25px;
             width: 100%;
-            max-width: 400px; /* Ancho del chat popup */
-            height: 70vh; /* Altura del chat popup */
+            max-width: 400px; 
+            height: 70vh; 
             max-height: 550px;
             background-color: #ffffff;
             box-shadow: 0 8px 25px rgba(0,0,0,0.2);
-            border-radius: 18px; /* Bordes redondeados para el popup */
+            border-radius: 18px; 
             overflow: hidden;
             display: flex;
             flex-direction: column;
             z-index: 998;
-            visibility: hidden; /* Oculto por defecto */
+            visibility: hidden; 
             opacity: 0;
             transform: translateY(20px) scale(0.95);
             transition: visibility 0.3s, opacity 0.3s, transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
@@ -310,7 +310,7 @@
             justify-content: center;
             border-top-left-radius: 18px; 
             border-top-right-radius: 18px;
-            position: relative; /* Para posicionar el botón de cerrar */
+            position: relative; 
         }
         #chat-popup-container .chat-header-icon {
             margin-right: 8px;
@@ -415,8 +415,8 @@
 
         /* Estilo para los iconos de Material Icons en las tarjetas de servicio */
         .service-card .material-icons {
-            font-size: 4rem; /* 64px, equivalente a h-16 w-16 de Tailwind */
-            color: #3B82F6; /* text-blue-500 */
+            font-size: 4rem; 
+            color: #3B82F6; 
         }
 
     </style>
@@ -786,7 +786,7 @@
         if(playDemoButton) playDemoButton.addEventListener('click', startDemo); 
 
         // --- SCRIPT PARA EL CHAT POPUP ---
-        const n8nWebhookUrl = 'http://192.168.178.47:5678/webhook/487e7c09-1588-43ca-a8e5-42cfce2b6f0e'; 
+        const n8nWebhookUrl = 'http://192.168.178.47:5678/webhook/487e7c09-1588-43ca-a8e5-42cfce2b6f0e'; // USA TU IP LOCAL AQUÍ
         const chatPopupButton = document.getElementById('chat-popup-button');
         const chatPopupContainer = document.getElementById('chat-popup-container');
         const popupChatMessagesDiv = document.getElementById('popupChatMessages');
@@ -849,13 +849,15 @@
                 });
 
                 if (!response.ok) {
+                    // MANTIENE EL LOG DETALLADO EN CONSOLA PARA DEBUGGING
                     let errorDetail = `Código de error: ${response.status}`;
                     try {
                         const errorData = await response.json();
                         errorDetail += ` - ${errorData.message || JSON.stringify(errorData)}`;
                     } catch (e) { errorDetail += ` - ${await response.text()}`; }
                     console.error('Error en la respuesta de n8n (popup):', errorDetail);
-                    appendPopupMessage(`Lo siento, hubo un problema con el servidor. ${errorDetail}`, 'bot', true);
+                    // MENSAJE GENÉRICO PARA EL USUARIO
+                    appendPopupMessage('Estamos teniendo algunos problemas técnicos. Por favor, inténtalo de nuevo más tarde.', 'bot', true);
                     return;
                 }
 
@@ -863,12 +865,16 @@
                 if (data && data.responseMessage) {
                     appendPopupMessage(data.responseMessage, 'bot');
                 } else {
+                    // MANTIENE EL LOG DETALLADO EN CONSOLA PARA DEBUGGING
                     console.warn('Respuesta de n8n (popup) no tiene la propiedad responseMessage:', data);
-                    appendPopupMessage('No he recibido una respuesta con el formato esperado.', 'bot', true);
+                    // MENSAJE GENÉRICO PARA EL USUARIO
+                    appendPopupMessage('Estamos teniendo algunos problemas técnicos. Por favor, inténtalo de nuevo más tarde.', 'bot', true);
                 }
             } catch (error) {
+                // MANTIENE EL LOG DETALLADO EN CONSOLA PARA DEBUGGING
                 console.error('Error de red o al enviar mensaje (popup):', error);
-                appendPopupMessage('No pude conectar con el asistente. Revisa tu conexión o la configuración de n8n (CORS).', 'bot', true);
+                // MENSAJE GENÉRICO PARA EL USUARIO
+                appendPopupMessage('Estamos teniendo algunos problemas técnicos. Por favor, inténtalo de nuevo más tarde.', 'bot', true);
             } finally {
                 if(popupSendButton) popupSendButton.disabled = false;
                 if(popupUserInputField) popupUserInputField.focus();
