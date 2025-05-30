@@ -8,6 +8,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <style>
         /* Estilos originales de tu index.html */
@@ -419,6 +420,111 @@
             color: #3B82F6; 
         }
 
+        /* --- INICIO ESTILOS PARA EL SLIDER DE ILUSTRACIONES --- */
+        .slider-section-container { 
+            font-family: 'Inter', sans-serif;
+            color: #1f2937; 
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;  
+            scrollbar-width: none;  
+        }
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none; 
+        }
+        /* #sliderDescriptionArea ya no se usa, se eliminará del HTML y JS */
+
+        .nav-dots-container { 
+            display: flex;
+            align-items: center;
+        }
+        #sliderNavDotsContainer.dots-background { 
+            background-color: rgba(209, 213, 219, 0.5); 
+            padding: 0.5rem 1rem; 
+            border-radius: 9999px; 
+            display: inline-flex; 
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .nav-dot { 
+            height: 10px;
+            width: 10px; 
+            border-radius: 50%; 
+            background-color: #9ca3af; 
+            margin: 0 6px; 
+            cursor: pointer;
+            transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1), 
+                        background-color 0.4s cubic-bezier(0.4, 0, 0.2, 1), 
+                        border-radius 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .nav-dot.active { 
+            width: 32px; 
+            border-radius: 5px; 
+            background-color: #3b82f6; 
+        }
+        .slider-arrow { 
+            background-color: rgba(0, 0, 0, 0.3);
+            color: white;
+            padding: 0.5rem; 
+            border-radius: 9999px; 
+            transition: background-color 0.2s ease;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 10;
+            cursor: pointer;
+        }
+        .slider-arrow:hover {
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+        .slider-arrow svg {
+            width: 1.5rem; 
+            height: 1.5rem; 
+        }
+        
+        #floatingTextOverSlider {
+            position: absolute;
+            top: 15%; 
+            left: 50%;
+            width: 90%; 
+            max-width: 500px; 
+            color: #1f2937; 
+            text-align: center;
+            font-size: 1.125rem; 
+            line-height: 1.6;   
+            font-weight: 600; 
+            opacity: 0; 
+            pointer-events: none; 
+            z-index: 5;
+            transform: translateX(-50%); 
+        }
+         @media (min-width: 768px) { 
+            #floatingTextOverSlider {
+                font-size: 1.5rem; 
+                line-height: 1.5;
+            }
+        }
+        #floatingTextOverSlider.visible {
+            animation: textBounceInSlider 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+        @keyframes textBounceInSlider {
+            0% {
+                opacity: 0;
+                transform: translateX(-50%) translateY(40px) scale(0.85);
+            }
+            60% {
+                opacity: 1;
+                transform: translateX(-50%) translateY(-10px) scale(1.03);
+            }
+            80% {
+                transform: translateX(-50%) translateY(5px) scale(0.99);
+            }
+            100% {
+                opacity: 1;
+                transform: translateX(-50%) translateY(0) scale(1);
+            }
+        }
+        /* --- FIN ESTILOS PARA EL SLIDER DE ILUSTRACIONES --- */
+
     </style>
 </head>
 <body class="bg-gray-100"> 
@@ -491,6 +597,65 @@
         </div>
     </section>
 
+    <section id="illustration-slider" class="py-16 md:py-24 bg-white slider-section-container">
+        <div class="container mx-auto px-4">
+            <header class="text-center mb-10 md:mb-12">
+                <h2 class="text-4xl md:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-sky-500" style="font-family: 'Poppins', sans-serif;">
+                    Soluciones a Medida para Tu Negocio
+                </h2>
+                </header>
+
+            <div id="sliderImageScrollerWrapper" class="relative">
+                <div id="sliderImageScroller" class="flex overflow-x-auto snap-x snap-mandatory scroll-smooth hide-scrollbar">
+                    <div class="slider-slide snap-center flex-shrink-0 w-full px-2 md:px-4" data-slider-index="0">
+                        <div class="bg-white rounded-xl shadow-xl p-4 md:p-6 h-[60vh] md:h-[70vh] flex items-center justify-center">
+                            <img src="images/chef-bot.png" 
+                                 alt="Ilustración Chef Bot para Restaurante" 
+                                 class="max-w-full max-h-full object-contain rounded-lg"
+                                 onerror="this.onerror=null;this.src='https://placehold.co/600x800/CCCCCC/333333?text=Chef+Bot+no+encontrado';this.alt='Error al cargar Chef Bot';">
+                        </div>
+                    </div>
+
+                    <div class="slider-slide snap-center flex-shrink-0 w-full px-2 md:px-4" data-slider-index="1">
+                        <div class="bg-white rounded-xl shadow-xl p-4 md:p-6 h-[60vh] md:h-[70vh] flex items-center justify-center">
+                            <img src="images/dental-tech.png" 
+                                 alt="Ilustración Tecnología Dental" 
+                                 class="max-w-full max-h-full object-contain rounded-lg"
+                                 onerror="this.onerror=null;this.src='https://placehold.co/600x800/CCCCCC/333333?text=Dental+Tech+no+encontrado';this.alt='Error al cargar Dental Tech';">
+                        </div>
+                    </div>
+
+                    <div class="slider-slide snap-center flex-shrink-0 w-full px-2 md:px-4" data-slider-index="2">
+                        <div class="bg-white rounded-xl shadow-xl p-4 md:p-6 h-[60vh] md:h-[70vh] flex items-center justify-center">
+                            <img src="images/pet-care.png" 
+                                 alt="Ilustración Cuidado de Mascotas y Veterinario" 
+                                 class="max-w-full max-h-full object-contain rounded-lg"
+                                 onerror="this.onerror=null;this.src='https://placehold.co/600x800/CCCCCC/333333?text=Pet+Care+no+encontrado';this.alt='Error al cargar Pet Care';">
+                        </div>
+                    </div>
+                </div> 
+
+                <button id="sliderPrevButton" class="slider-arrow left-2 md:left-4 hidden md:block" aria-label="Anterior">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+                    </svg>
+                </button>
+                <button id="sliderNextButton" class="slider-arrow right-2 md:right-4 hidden md:block" aria-label="Siguiente">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                    </svg>
+                </button>
+                
+                <div id="floatingTextOverSlider" class="opacity-0 pointer-events-none">
+                    </div>
+            </div> 
+
+            <div class="flex justify-center mt-6"> 
+                <div id="sliderNavDotsContainer" class="nav-dots-container dots-background">
+                </div>
+            </div>
+            </div>
+    </section>
     <section id="demo" class="py-16 md:py-24 bg-gray-100">
         <div class="container mx-auto px-6">
             <h2 class="section-title text-3xl md:text-4xl font-semibold text-center text-gray-800">Demostración automática</h2>
@@ -786,7 +951,7 @@
         if(playDemoButton) playDemoButton.addEventListener('click', startDemo); 
 
         // --- SCRIPT PARA EL CHAT POPUP ---
-        const n8nWebhookUrl = 'http://192.168.178.47:5678/webhook/487e7c09-1588-43ca-a8e5-42cfce2b6f0e'; // USA TU IP LOCAL AQUÍ
+        const n8nWebhookUrl = 'YOUR_N8N_WEBHOOK_URL_HERE'; 
         const chatPopupButton = document.getElementById('chat-popup-button');
         const chatPopupContainer = document.getElementById('chat-popup-container');
         const popupChatMessagesDiv = document.getElementById('popupChatMessages');
@@ -840,23 +1005,31 @@
             appendPopupMessage(userText, 'user');
             popupUserInputField.value = '';
             if(popupSendButton) popupSendButton.disabled = true;
+            
+            if (n8nWebhookUrl === 'YOUR_N8N_WEBHOOK_URL_HERE' || !n8nWebhookUrl) {
+                console.warn("URL del Webhook de n8n no configurada.");
+                 setTimeout(() => { 
+                    appendPopupMessage("La conexión con el servidor no está configurada. Esta es una respuesta de demostración.", 'bot');
+                    if(popupSendButton) popupSendButton.disabled = false;
+                    if(popupUserInputField) popupUserInputField.focus();
+                }, 1000);
+                return;
+            }
 
             try {
                 const fullUrl = `${n8nWebhookUrl}?mensage=${encodeURIComponent(userText)}`;
                 const response = await fetch(fullUrl, {
-                    method: 'GET',
+                    method: 'GET', 
                     headers: { 'Accept': 'application/json' }
                 });
 
                 if (!response.ok) {
-                    // MANTIENE EL LOG DETALLADO EN CONSOLA PARA DEBUGGING
                     let errorDetail = `Código de error: ${response.status}`;
                     try {
                         const errorData = await response.json();
                         errorDetail += ` - ${errorData.message || JSON.stringify(errorData)}`;
                     } catch (e) { errorDetail += ` - ${await response.text()}`; }
                     console.error('Error en la respuesta de n8n (popup):', errorDetail);
-                    // MENSAJE GENÉRICO PARA EL USUARIO
                     appendPopupMessage('Estamos teniendo algunos problemas técnicos. Por favor, inténtalo de nuevo más tarde.', 'bot', true);
                     return;
                 }
@@ -865,21 +1038,206 @@
                 if (data && data.responseMessage) {
                     appendPopupMessage(data.responseMessage, 'bot');
                 } else {
-                    // MANTIENE EL LOG DETALLADO EN CONSOLA PARA DEBUGGING
                     console.warn('Respuesta de n8n (popup) no tiene la propiedad responseMessage:', data);
-                    // MENSAJE GENÉRICO PARA EL USUARIO
-                    appendPopupMessage('Estamos teniendo algunos problemas técnicos. Por favor, inténtalo de nuevo más tarde.', 'bot', true);
+                    appendPopupMessage('Respuesta no comprendida del servidor. Intente más tarde.', 'bot', true);
                 }
             } catch (error) {
-                // MANTIENE EL LOG DETALLADO EN CONSOLA PARA DEBUGGING
                 console.error('Error de red o al enviar mensaje (popup):', error);
-                // MENSAJE GENÉRICO PARA EL USUARIO
-                appendPopupMessage('Estamos teniendo algunos problemas técnicos. Por favor, inténtalo de nuevo más tarde.', 'bot', true);
+                appendPopupMessage('No se pudo conectar con el servidor. Verifique su conexión o intente más tarde.', 'bot', true);
             } finally {
                 if(popupSendButton) popupSendButton.disabled = false;
                 if(popupUserInputField) popupUserInputField.focus();
             }
         }
+
+        // --- INICIO SCRIPT PARA EL SLIDER DE ILUSTRACIONES ---
+        function initializeIllustrationSlider() {
+            const sliderImageScrollerWrapper = document.getElementById('sliderImageScrollerWrapper'); 
+            const sliderImageScroller = document.getElementById('sliderImageScroller'); 
+            const sliderSlides = document.querySelectorAll('.slider-slide'); 
+            // MODIFICADO: sliderDescriptionArea ya no se usa en el JS
+            const sliderNavDotsContainer = document.getElementById('sliderNavDotsContainer');
+            const sliderPrevButton = document.getElementById('sliderPrevButton');
+            const sliderNextButton = document.getElementById('sliderNextButton');
+            const floatingTextElement = document.getElementById('floatingTextOverSlider'); 
+            
+            if (!sliderImageScrollerWrapper || !sliderImageScroller || sliderSlides.length === 0 || !sliderNavDotsContainer ) {
+                console.warn("Faltan elementos clave del slider de ilustraciones (scroller, slides, o dots container). El slider no se inicializará.");
+                return;
+            }
+             if (!floatingTextElement) {
+                console.warn("Elemento de texto flotante 'floatingTextOverSlider' no encontrado.");
+            }
+            // MODIFICADO: Ya no se necesita sliderDescriptionArea
+            // if (!sliderDescriptionArea) {
+            //     console.warn("Elemento de descripción 'sliderDescriptionArea' no encontrado.");
+            // }
+
+            // MODIFICADO: Array sliderDescriptions eliminado
+
+            const sliderFloatingTexts = [ // Textos actualizados y en orden con las imágenes
+                "Reservas directas desde WhatsApp y Redes Sociales. Tu mesa, con un clic.", // Para Chef Bot / Restaurante
+                "Sonrisas perfectas, agenda impecable. IA en tu consulta dental.",      // Para Dental Tech / Dentista
+                "IA para tu clínica veterinaria: Citas y atención al instante."        // Para Pet Care / Veterinario
+            ];
+
+            let currentSliderActiveIndex = -1;
+            let sliderNavDots = []; 
+
+            if(sliderNavDotsContainer) {
+                sliderNavDotsContainer.classList.add('dots-background');
+            }
+
+            sliderSlides.forEach((slide, index) => {
+                const dot = document.createElement('div');
+                dot.classList.add('nav-dot'); 
+                dot.dataset.sliderIndex = index; 
+                dot.addEventListener('click', () => {
+                    scrollSliderTo(index); 
+                });
+                if(sliderNavDotsContainer) sliderNavDotsContainer.appendChild(dot);
+                sliderNavDots.push(dot); 
+            });
+
+            function scrollSliderTo(slideIndex) {
+                if (slideIndex < 0 || slideIndex >= sliderSlides.length) return;
+                const targetSlide = sliderSlides[slideIndex];
+                if (!targetSlide) return;
+
+                const scrollerRect = sliderImageScroller.getBoundingClientRect();
+                const targetRect = targetSlide.getBoundingClientRect();
+                const scrollAmount = sliderImageScroller.scrollLeft + (targetRect.left - scrollerRect.left) + (targetRect.width / 2) - (scrollerRect.width / 2);
+                
+                sliderImageScroller.scrollTo({
+                    left: scrollAmount,
+                    behavior: 'smooth'
+                });
+            }
+            
+            if (sliderPrevButton && sliderNextButton) {
+                sliderPrevButton.addEventListener('click', () => {
+                    let newIndex = currentSliderActiveIndex - 1;
+                    if (newIndex < 0) {
+                        newIndex = sliderSlides.length - 1; 
+                    }
+                    scrollSliderTo(newIndex);
+                });
+
+                sliderNextButton.addEventListener('click', () => {
+                    let newIndex = currentSliderActiveIndex + 1;
+                    if (newIndex >= sliderSlides.length) {
+                        newIndex = 0; 
+                    }
+                    scrollSliderTo(newIndex);
+                });
+            }
+
+            function updateSliderActiveDotVisuals(activeIndex) {
+                sliderNavDots.forEach((dot, i) => {
+                    if (i === activeIndex) {
+                        dot.classList.add('active');
+                    } else {
+                        dot.classList.remove('active');
+                    }
+                });
+            }
+
+            function updateSliderActiveState(index) {
+                if (index < 0 || index >= sliderSlides.length) return; 
+                if (index === currentSliderActiveIndex && currentSliderActiveIndex !== -1 && sliderNavDots.length > 0 && sliderNavDots[index]?.classList.contains('active')) return; 
+                
+                currentSliderActiveIndex = index;
+                
+                // MODIFICADO: Lógica para sliderDescriptionArea eliminada
+
+                if (floatingTextElement) {
+                    floatingTextElement.classList.remove('visible'); 
+                    void floatingTextElement.offsetWidth; 
+
+                    if (sliderFloatingTexts[index] && sliderFloatingTexts[index].trim() !== "") {
+                        floatingTextElement.textContent = sliderFloatingTexts[index];
+                        setTimeout(() => { 
+                            floatingTextElement.classList.add('visible');
+                        }, 50); 
+                    } else {
+                        floatingTextElement.textContent = ''; 
+                    }
+                }
+                
+                updateSliderActiveDotVisuals(index);
+            }
+            
+            const sliderObserverOptions = {
+                root: sliderImageScroller, 
+                rootMargin: '0px', 
+                threshold: 0.6 
+            };
+
+            let sliderIntersectionTimeout = null;
+
+            const sliderObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) { 
+                        const slideIndex = parseInt(entry.target.dataset.sliderIndex);
+                        const scrollerRect = sliderImageScroller.getBoundingClientRect();
+                        const slideRect = entry.target.getBoundingClientRect();
+                        if (scrollerRect.width === 0 || slideRect.width === 0) return;
+
+                        const slideCenter = slideRect.left + slideRect.width / 2;
+                        const scrollerCenter = scrollerRect.left + scrollerRect.width / 2;
+
+                        if (Math.abs(slideCenter - scrollerCenter) < (slideRect.width * 0.45)) { 
+                            clearTimeout(sliderIntersectionTimeout);
+                            sliderIntersectionTimeout = setTimeout(() => {
+                                updateSliderActiveState(slideIndex);
+                            }, 50); 
+                        }
+                    }
+                });
+            }, sliderObserverOptions);
+
+            sliderSlides.forEach(slide => {
+                sliderObserver.observe(slide);
+            });
+            
+            function fullyInitializeSliderGallery() {
+                if (sliderSlides.length > 0) { 
+                    let initialVisibleSlideIndex = 0;
+                    if (sliderImageScroller.scrollLeft === 0 && sliderSlides.length > 0) { 
+                        initialVisibleSlideIndex = 0;
+                    } else { 
+                        let minDistanceToCenter = Infinity;
+                        sliderSlides.forEach((slide, index) => {
+                            const slideRect = slide.getBoundingClientRect();
+                            const scrollerRect = sliderImageScroller.getBoundingClientRect();
+                            if (scrollerRect.width === 0) return;
+
+                            const slideCenter = slideRect.left + slideRect.width / 2;
+                            const scrollerCenter = scrollerRect.left + scrollerRect.width / 2;
+                            const distance = Math.abs(slideCenter - scrollerCenter);
+
+                            if (distance < minDistanceToCenter) {
+                                minDistanceToCenter = distance;
+                                initialVisibleSlideIndex = index;
+                            }
+                        });
+                    }
+                    
+                    if (initialVisibleSlideIndex >= 0 && initialVisibleSlideIndex < sliderSlides.length) {
+                       updateSliderActiveState(initialVisibleSlideIndex);
+                    }
+                }
+            }
+            
+            if (document.readyState === 'complete') {
+                 setTimeout(fullyInitializeSliderGallery, 150); 
+            } else {
+                window.addEventListener('load', () => setTimeout(fullyInitializeSliderGallery, 150));
+            }
+        }
+        initializeIllustrationSlider();
+        // --- FIN SCRIPT PARA EL SLIDER DE ILUSTRACIONES ---
+
     </script>
 
 </body>
